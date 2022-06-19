@@ -1,50 +1,8 @@
 #pragma once
+#include "XValues.h"
 
-struct Point3f
-{
-    long double x;
-    long double y;
-    long double z;
-    Point3f& operator -(const Point3f& a2)
-    {
-        x -= a2.x;
-        y -= a2.y;
-        z -= a2.z;
-        return *this;
-    }
-    Point3f& operator *(const Point3f& a2)
-    {
-        x *= a2.x;
-        y *= a2.y;
-        z *= a2.z;
-        return *this;
-    }
-    Point3f& operator *=(const Point3f& a2)
-    {
-        *this = *this * a2;
-        return *this;
-    }
-    Point3f& operator /(const long double& a2)
-    {
-        x /= a2;
-        y /= a2;
-        z /= a2;
-        return *this;
-    }
-    Point3f& operator +(const Point3f& a2)
-    {
-        x += a2.x;
-        y += a2.y;
-        z += a2.z;
-        return *this;
-    }
-    long double sum()
-    {
-        return x + y + z;
-    }
-};
 
-Point3f get_vertices(std::vector<Point3f> v)
+Point3f get_normal(std::vector<Point3f> v)
 {
     auto V{ v[1] - v[0] };
     auto W{ v[2] - v[0] };
@@ -62,8 +20,8 @@ std::string make_facet(std::vector<Point3f> v)
     assert(v.size() == 3);
     std::string output{ "  facet normal " };
 
-    auto nrml = get_vertices(v);
-    output.append(std::to_string(nrml.x) + ' ' + std::to_string(nrml.y) + ' ' + std::to_string(nrml.z));
+    auto nrml = get_normal(v);
+    output.append(std::to_string(nrml.x) + ' ' + std::to_string(nrml.y) + ' ' + std::to_string(-nrml.z));
 
     output.append("\n  outer loop\n");
 

@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="STL generator.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,6 +32,9 @@
     <None Include="png_to_txt.py">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="EX1.stl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="skin.png">
@@ -39,5 +45,19 @@
     <ClInclude Include="stl generation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SkinStructure.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XValues.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="py_output.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="plane_coords.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
