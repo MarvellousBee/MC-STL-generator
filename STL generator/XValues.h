@@ -70,4 +70,20 @@ struct Point3f
     {
         return x + y + z;
     }
+    friend Point3f operator -(const Point3f& arg1, const Point3f& arg2);
 };
+
+Point3f operator -(const Point3f& arg1, const Point3f& arg2)
+{
+    Point3f ret{ 0,0,0 };
+
+    ret.x -= arg1.x;
+    ret.y -= arg1.y;
+    ret.z -= arg1.z;
+
+    ret.x -= arg2.x;
+    ret.y -= arg2.y;
+    ret.z -= arg2.z;
+
+    return ret;
+}

@@ -9,54 +9,8 @@
 #include "stl generation.h"
 #include "XValues.h"
 #include "SkinStructure.h"
+#include "Skin.h"
 
-namespace constants
-{
-    static const int num_of_pixels{ 64 };
-}
-struct Skin
-{
-    std::vector<std::vector<Values4>> RGBA_2d_array;
-    std::map<std::string, std::map<std::string, Values4>> skin_structure;
-    
-    // checking num of colors again to be 100% certain
-    std::vector<Values4> colors;
-
-    Skin(std::vector<std::string>& raw_skin_data, std::ifstream& skin_documentation_file)
-    {
-        skin_structure = get_skin_structure(skin_documentation_file);
-        
-        RGBA_2d_array.resize(constants::num_of_pixels);
-        for (int i{ 0 }; i < constants::num_of_pixels; i++)
-            RGBA_2d_array[i].resize(constants::num_of_pixels);
-
-        for (int x{ 0 }; x < constants::num_of_pixels; x++)
-            for (int y{ 0 }; y < constants::num_of_pixels; y++)
-            {
-                auto& str{ raw_skin_data[x * constants::num_of_pixels + y] };
-                static const char delimiter = ' ';
-                int pos{ 0 };
-                int id_of_number_in_row{ -1 };
-                std::string token;
-                while ((pos = str.find(delimiter)) != std::string::npos) 
-                {
-                    token = str.substr(0, pos);
-                    long double temp{ std::stod(token) };
-                    RGBA_2d_array[x][y][++id_of_number_in_row] = temp;
-                    str.erase(0, pos + 1);
-                }
-                bool new_color{ true };
-                for (auto& c : colors)
-                    if (RGBA_2d_array[x][y] == c)
-                    {
-                        new_color = false;
-                        break;
-                    }
-                if (new_color)
-                    colors.push_back(RGBA_2d_array[x][y]);
-            }
-    }
-};
 
 //given 2 x/y coordinates, returns all pixel coordinates of a rectangle constructed between those 2 points
 std::vector<std::pair<int, int>> all_coordinates(Values4 input)
@@ -64,7 +18,7 @@ std::vector<std::pair<int, int>> all_coordinates(Values4 input)
     std::vector<std::pair<int, int>> output;
     for (long double x{ input[0] }; x < input[2]; x++)
         for (long double y{ input[1] }; y < input[3]; y++)
-            output.push_back({ y, x });
+            output.push_back({ y, x});
     
     return output;
 }
@@ -93,7 +47,7 @@ struct BodyPart
     };
     std::string output_text{ "" };
 
-    BodyPart(std::string part_name, const Point3f& _pos, const Skin& skin_to_apply, const int& color_id) 
+    BodyPart(std::string part_name, const Point3f _pos, const Point3f size, const Skin& skin_to_apply, const int& color_id)
         : pos(_pos)
         , skin(skin_to_apply)
     {
@@ -101,29 +55,123 @@ struct BodyPart
         //output_text += make_rectangle(pos, size);
         //front
         
-        auto Tpos{pos};
+        std::map<std::string, std::vector<std::pair<int, int>>> coordinates{
+            { "Front" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Front")) }
+        ,   { "Back"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Back")) }
+        ,   { "Left"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Left")) }
+        ,   { "Right" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Right")) }
+        ,   { "Bottom", all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Bottom")) }
+        ,   { "Top"    , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
+        };
 
-        //for (auto& a : skin_to_apply.skin_structure)
-        //    for (auto& b : a.second)
-        //    {
-        //        std::cout << a.first << "|" << b.first << "|";
-        //        for (int i{ 0 }; i < 4; i++)
-        //            std::cout << b.second.at(i) << ' ';
+        auto starting_pos{ pos };
+        auto cube_pos{pos};
 
-        //        std::cout << '\n';
-        //    }
 
-        for (auto& pair : all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Front")))
+        auto center_pos{ _pos };
+        center_pos.y -= size.y - 1;
+        center_pos.x += 1;
+        center_pos.z -= size.z - 1;
+        output_text += make_rectangle(center_pos, size);
+        
+
+        auto tex_coords{ coordinates["Front"] };
+        auto offset_a = tex_coords[0].first;
+        auto offset_b = tex_coords[0].second;
+
+        for (auto& pair : tex_coords)
         {
             if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
                 continue;
-            Tpos = pos;
-            Tpos.z -= pair.first;
-            Tpos.y -= pair.second;
-            output_text += make_rectangle(Tpos, {1.f,1.f,1.f});
+
+            cube_pos = starting_pos;
+            cube_pos.z -= pair.first - offset_a;
+            cube_pos.y -= pair.second - offset_b;
+            output_text += make_rectangle(cube_pos, {1.f,1.f,1.f});
         }
+
+        tex_coords = coordinates["Back"];
+        offset_a = tex_coords[0].first;
+        offset_b = tex_coords[0].second;
         
+
+        for (auto& pair : tex_coords)
+        {
+            if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+                continue;
+
+            cube_pos = starting_pos;
+            cube_pos.z -= pair.first - offset_a;
+            cube_pos.y += pair.second - offset_b - size.y + 1;
+            cube_pos.x += size.x + 1;
+            output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+        }
+
+        tex_coords = coordinates["Left"];
+        offset_a = tex_coords[0].first;
+        offset_b = tex_coords[0].second;
+
+
+        for (auto& pair : tex_coords)
+        {
+            if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+                continue;
+
+            cube_pos = starting_pos;
+            cube_pos.z -= pair.first - offset_a;
+            cube_pos.y -= size.y;
+            cube_pos.x += pair.second - offset_b + 1;
+            output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+        }
+
+        tex_coords = coordinates["Right"];
+        offset_a = tex_coords[0].first;
+        offset_b = tex_coords[0].second;
+
+
+        for (auto& pair : tex_coords)
+        {
+            if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+                continue;
+
+            cube_pos = starting_pos;
+            cube_pos.z -= pair.first - offset_a;
+            cube_pos.y += 1;
+            cube_pos.x -= pair.second - offset_b - size.x;
+            output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+        }
+
+    //    for (auto& pair : tex_coords)
+    //    {
+    //        if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+    //            continue;
+
+    //        cube_pos = starting_pos;
+    //        cube_pos.z += 1;// offset_a;
+    //        cube_pos.y -= pair.second;
+    //        //cube_pos.x += offset_x - pair.first + 4;
+    //        output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+    //    }
+
+    //    tex_coords = coordinates["Bottom"];
+    //    //offset_x = tex_coords[0].first;
+    //    //offset_b = tex_coords[0].second;
+
+
+    //    for (auto& pair : tex_coords)
+    //    {
+    //        if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+    //            continue;
+
+    //        cube_pos = starting_pos;
+    //        cube_pos.z -= 12.f;
+    //        cube_pos.y -= pair.second;
+    //        //cube_pos.x += offset_x - pair.first + 4;
+    //        output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+    //    }
+    //    
     }
+
     std::string get_string() const
     {
         return output_text;
@@ -154,7 +202,6 @@ int main()
     Skin skin{ text_data, mc_skin_documentation };
     mc_skin_documentation.close();
 
-    
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
         std::ofstream outf{ "EX" + std::to_string(i) + ".stl"};
@@ -164,11 +211,9 @@ int main()
         }
 
 
-        BodyPart torso{ "Torso", {0.f,0.f,0.f}, skin, i };
-
-
         outf << "solid ASCII\n";
-        outf << torso.get_string();
+        outf << BodyPart{ "Torso",  { 0.f,0.f,0.f  }, {  4.f,  8.f, 12.f  }, skin, i }.get_string();
+        outf << BodyPart{ "Head" ,  { 0.f,0.f,50.f }, {  8.f,  8.f, 8.f  }, skin, i }.get_string();
         //outf << make_rectangle({  0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
         //outf << make_rectangle({  5.f,  0.f,  0.f }, { 5.f, 10.f,  2.f });
         //outf << make_rectangle({  0.f, 10.f,  5.f }, { 5.f, 10.f,  8.f });
@@ -182,7 +227,7 @@ int main()
         std::cerr << "Could not open  EX" + std::to_string(i) + ".stl for writing!\n";
         return 1;
     }
-    outf << make_rectangle({ 0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
+    //outf << make_rectangle({ 0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
 
     
 
