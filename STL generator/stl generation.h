@@ -96,3 +96,15 @@ std::string make_rectangle(const Point3f& origin, const Point3f& size)
 
     return output;
 }
+std::string make_half_rectangle(const Point3f& origin, const Point3f& size)
+{
+    std::string output{ "" };
+    auto temp{ origin };
+
+    make_facet({
+            { origin }
+        ,   { origin.x + size.x, origin.y, origin.z }
+        ,   { origin.x, origin.y + size.y, origin.z }
+        });
+    return output;
+}

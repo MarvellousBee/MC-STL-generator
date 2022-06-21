@@ -228,17 +228,17 @@ int main()
     //}
     
 
-    std::vector<std::string> text_data{};
-    text_data.reserve(constants::num_of_pixels * constants::num_of_pixels);
+    std::vector<std::string> mc_skin_documentation{};
+    mc_skin_documentation.reserve(constants::num_of_pixels * constants::num_of_pixels);
     std::string temp;
     std::ifstream skin_documentation_file("py_output.txt");
     int i{ -1 };
     while (getline(skin_documentation_file, temp))
-        text_data.push_back(temp);//(*text_data)[i] = temp;
+        mc_skin_documentation.push_back(temp);//(*mc_skin_documentation)[i] = temp;
     skin_documentation_file.close();
-    std::ifstream mc_skin_documentation("plane_coords.txt");
-    Skin skin{ text_data, mc_skin_documentation };
-    mc_skin_documentation.close();
+    std::ifstream text_data("plane_coords.txt");
+    Skin skin{ mc_skin_documentation, text_data };
+    text_data.close();
 
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
@@ -247,28 +247,28 @@ int main()
             std::cerr << "Could not open  EX" + std::to_string(i) + ".stl for writing!\n";
             return 1;
         }
-        std::cout << skin.colors[i].val[0] << ' ' << skin.colors[i].val[1] << ' ' << skin.colors[i].val[2] << ' ' << skin.colors[i].val[3] << '\n';
 
         outf << "solid ASCII\n";
-        outf << BodyPart{ "Torso",  { 0.f,0.f,24.f  }, skin, i }.get_string(); // size:  {  4.f,  8.f, 12.f  }
-        outf << BodyPart{ "Head" ,  { 0.f,0.f,32.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
+        outf << BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i }.get_string(); // size:  {  4.f,  8.f, 12.f  }
+        outf << BodyPart{ "Head" ,  { -2.f,0.f,38.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
         
-        outf << BodyPart{ "Right Leg" ,  { 0.f,1.f,12.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Left Leg" ,  { 0.f ,4.f,12.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Right Leg",  { 0.f, 3.f, 9.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Left Leg" ,  { 0.f,-7.f, 9.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
        
-        outf << BodyPart{ "Right Arm" ,  { 50.f,-4.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-        outf << BodyPart{ "Left Arm" ,  { 50.f,18.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Right Arm" ,  { 0.f,  8.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Left Arm" ,   { 0.f,-12.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
 
 
         //stl_files.push_back(outf);
     }
 
+    
     std::ofstream outf{ "test.stl" };
     if (!outf) {
         std::cerr << "Could not open  EX" + std::to_string(i) + ".stl for writing!\n";
         return 1;
     }
-    //outf << make_rectangle({ 0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
+    //outf << make_half_rectangle({ 0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
 
     
 
