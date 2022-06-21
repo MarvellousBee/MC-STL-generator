@@ -47,7 +47,7 @@ struct BodyPart
     };
     std::string output_text{ "" };
 
-    BodyPart(std::string part_name, const Point3f _pos, const Point3f size, const Skin& skin_to_apply, const int& color_id)
+    BodyPart(std::string part_name, const Point3f _pos, const Skin& skin_to_apply, const int& color_id)
         : pos(_pos)
         , skin(skin_to_apply)
     {
@@ -61,18 +61,24 @@ struct BodyPart
         ,   { "Left"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Left")) }
         ,   { "Right" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Right")) }
         ,   { "Bottom", all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Bottom")) }
-        ,   { "Top"    , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
+        ,   { "Top"   , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
+        };
+
+        Point3f size{
+            coordinates["Left"].back().second - coordinates["Left"][0].second + 1,
+            coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
+            coordinates["Front"].back().first - coordinates["Front"][0].first + 1
         };
 
         auto starting_pos{ pos };
         auto cube_pos{pos};
 
 
-        auto center_pos{ _pos };
-        center_pos.y -= size.y - 1;
-        center_pos.x += 1;
-        center_pos.z -= size.z - 1;
-        output_text += make_rectangle(center_pos, size);
+        //auto center_pos{ _pos };
+        //center_pos.y -= size.y - 1;
+        //center_pos.x += 1;
+        //center_pos.z -= size.z - 1;
+        //output_text += make_rectangle(center_pos, size);
         
 
         auto tex_coords{ coordinates["Front"] };
@@ -139,6 +145,38 @@ struct BodyPart
             cube_pos.y += 1;
             cube_pos.x -= pair.second - offset_b - size.x;
             output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
+        }
+
+        tex_coords = coordinates["Top"];
+        offset_a = tex_coords[0].first;
+        offset_b = tex_coords[0].second;
+
+        for (auto& pair : tex_coords)
+        {
+            if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+                continue;
+
+            cube_pos = starting_pos;
+            cube_pos.x -= pair.first - offset_a - size.x;
+            cube_pos.y -= pair.second - offset_b;
+            cube_pos.z += 1;
+            output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
+        }
+
+        tex_coords = coordinates["Bottom"];
+        offset_a = tex_coords[0].first;
+        offset_b = tex_coords[0].second;
+
+        for (auto& pair : tex_coords)
+        {
+            if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
+                continue;
+
+            cube_pos = starting_pos;
+            cube_pos.x -= pair.first - offset_a - size.x;
+            cube_pos.y -= pair.second - offset_b;
+            cube_pos.z -=  size.z;
+            output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
         }
 
     //    for (auto& pair : tex_coords)
@@ -209,14 +247,17 @@ int main()
             std::cerr << "Could not open  EX" + std::to_string(i) + ".stl for writing!\n";
             return 1;
         }
-
+        std::cout << skin.colors[i].val[0] << ' ' << skin.colors[i].val[1] << ' ' << skin.colors[i].val[2] << ' ' << skin.colors[i].val[3] << '\n';
 
         outf << "solid ASCII\n";
-        outf << BodyPart{ "Torso",  { 0.f,0.f,0.f  }, {  4.f,  8.f, 12.f  }, skin, i }.get_string();
-        outf << BodyPart{ "Head" ,  { 0.f,0.f,50.f }, {  8.f,  8.f, 8.f  }, skin, i }.get_string();
-        //outf << make_rectangle({  0.f,  0.f,  0.f }, { 5.f, 10.f, 15.f });
-        //outf << make_rectangle({  5.f,  0.f,  0.f }, { 5.f, 10.f,  2.f });
-        //outf << make_rectangle({  0.f, 10.f,  5.f }, { 5.f, 10.f,  8.f });
+        outf << BodyPart{ "Torso",  { 0.f,0.f,24.f  }, skin, i }.get_string(); // size:  {  4.f,  8.f, 12.f  }
+        outf << BodyPart{ "Head" ,  { 0.f,0.f,32.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
+        
+        outf << BodyPart{ "Right Leg" ,  { 0.f,1.f,12.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Left Leg" ,  { 0.f ,4.f,12.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+       
+        outf << BodyPart{ "Right Arm" ,  { 50.f,-4.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Left Arm" ,  { 50.f,18.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
 
 
         //stl_files.push_back(outf);
