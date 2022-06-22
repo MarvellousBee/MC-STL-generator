@@ -54,6 +54,9 @@
     <ClInclude Include="Skin.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="BodyPart.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="py_output.txt">

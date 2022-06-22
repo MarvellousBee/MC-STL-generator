@@ -96,15 +96,134 @@ std::string make_rectangle(const Point3f& origin, const Point3f& size)
 
     return output;
 }
+
 std::string make_half_rectangle(const Point3f& origin, const Point3f& size)
+{
+    std::string output{ "" };
+
+    //top 
+    output.append(make_facet({
+            { origin }
+        ,   { origin.x + size.x, origin.y, origin.z }
+        ,   { origin.x, origin.y + size.y, origin.z }
+        }));
+    
+    //bottom
+    output.append(make_facet({
+            { origin.x, origin.y, origin.z + size.z }
+        ,   { origin.x + size.x, origin.y, origin.z + size.z}
+        ,   { origin.x, origin.y + size.y, origin.z + size.z}
+        }));
+
+    //walls
+    auto temp{ origin };
+    output.append(make_plane(origin, size.x, size.z, 1));
+    output.append(make_plane(origin, size.y, size.z, 2));
+
+    
+    output.append(make_facet({
+            { origin.x + size.x, origin.y, origin.z}
+        ,   { origin.x + size.x, origin.y, origin.z + size.z}
+        ,   { origin.x, origin.y + size.y, origin.z + size.z}
+        }));
+    output.append(make_facet({
+            { origin.x + size.x, origin.y, origin.z}
+        ,   { origin.x, origin.y + size.y, origin.z + size.z}
+        ,   { origin.x, origin.y + size.y, origin.z}
+        }));
+
+    return output;
+}
+
+std::string make_side1_rectangle(const Point3f& origin, const Point3f& size)
 {
     std::string output{ "" };
     auto temp{ origin };
 
-    make_facet({
-            { origin }
-        ,   { origin.x + size.x, origin.y, origin.z }
-        ,   { origin.x, origin.y + size.y, origin.z }
-        });
+    // rect walls
+    output.append(make_plane(origin, size.x, size.y, 0));
+
+    temp = origin;
+    temp.y += size.y;
+    output.append(make_plane(origin, size.x, size.z, 1));
+
+    // facet walls
+    output.append(make_facet({
+           origin
+       ,   { origin.x, origin.y + size.y, origin.z}
+       ,   { origin.x, origin.y, origin.z + size.z}
+        }));
+
+    output.append(make_facet({
+           { origin.x + size.x, origin.y, origin.z}
+       ,   { origin.x + size.x, origin.y + size.y, origin.z}
+       ,   { origin.x + size.x, origin.y, origin.z + size.z}
+        }));
+
+    // angled wall
+
+    output.append(make_facet({
+           { origin.x, origin.y + size.y, origin.z}
+       ,   { origin.x + size.x, origin.y + size.y, origin.z}
+       ,   { origin.x + size.x, origin.y , origin.z + size.z}
+        }));
+
+    output.append(make_facet({
+           { origin.x, origin.y, origin.z + size.z}
+       ,   { origin.x, origin.y + size.y, origin.z}
+       ,   { origin.x + size.x, origin.y , origin.z + size.z}
+        }));
+
+    return output;
+}
+
+std::string make_side2_rectangle(Point3f origin, const Point3f& size)
+{
+    std::string output{ "" };
+    auto temp{ origin };
+
+    // rect walls
+    output.append(make_plane(origin, size.x, size.y, 0));
+
+    output.append(make_facet({
+           origin
+       ,   { origin.x, origin.y + size.y, origin.z }
+       ,   { origin.x, origin.y, origin.z + size.z}
+    }));
+
+    output.append(make_facet({
+           { origin.x, origin.y + size.y, origin.z + size.z }
+       ,   { origin.x, origin.y + size.y, origin.z }
+       ,   { origin.x, origin.y, origin.z + size.z}
+        }));
+
+
+    // facet walls
+    output.append(make_facet({
+           origin
+       ,   { origin.x + size.x, origin.y , origin.z}
+       ,   { origin.x, origin.y, origin.z + size.z}
+    }));
+
+    output.append(make_facet({
+           { origin.x, origin.y + size.y, origin.z}
+       ,   { origin.x + size.x, origin.y + size.y , origin.z}
+       ,   { origin.x, origin.y + size.y, origin.z + size.z}
+        }));
+
+    //// angled wall
+
+    output.append(make_facet({
+           { origin.x + size.x, origin.y + size.y, origin.z }
+       ,   { origin.x, origin.y , origin.z + size.z}
+       ,   { origin.x, origin.y + size.y, origin.z + size.z}
+        }));
+
+    output.append(make_facet({
+           { origin.x + size.x, origin.y + size.y, origin.z }
+       ,   { origin.x, origin.y , origin.z + size.z}
+       ,   { origin.x + size.x, origin.y , origin.z}
+        }));
+
     return output;
 }
