@@ -91,12 +91,32 @@ struct BodyPart
             cube_pos = starting_pos;
             cube_pos.z -= pair.first - offset_a;
             cube_pos.y -= pair.second - offset_b;
-            //cube_pos.x += 1;
+            
 
-            if (iter <= size.z)
+  
+            if (iter == 1){
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, {-1.f,-1.f,-1.f });
+            }
+            else if (iter == size.z){
+                cube_pos.y += 1;
+                cube_pos.x += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter == size.z * (size.y - 1) + 1){
+                cube_pos.x += 1;
+                cube_pos.z += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { -1.f,1.f,-1.f });
+            }
+            else if (iter == size.z * size.y){
+                cube_pos.x += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { -1.f,1.f,1.f });
+            }
+            else if (iter <= size.z)
                 output_text += make_half_rectangle(cube_pos, { 1.f,1.f,1.f });
-            else if (iter > (size.y - 1) * size.z)
-            {
+            else if (iter > (size.y - 1) * size.z){
                 cube_pos.y += 1;
                 output_text += make_half_rectangle(cube_pos, { 1.f,-1.f,1.f });
             }
@@ -130,8 +150,23 @@ struct BodyPart
             cube_pos.y += pair.second - offset_b - size.y + 1;
             cube_pos.x += size.x + 1;
 
-
-            if (iter <= size.z) {
+            if (iter == 1) {
+                cube_pos.z += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { 1.f,1.f,-1.f });
+            }
+            else if (iter == size.z) {
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter == size.z * (size.y - 1) + 1) {
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { 1.f,-1.f,-1.f });
+            }
+            else if (iter == size.z * size.y) {
+                cube_pos.y += 1;
+                output_text += make_side2_one_third_of_rectangle(cube_pos, { 1.f,-1.f,1.f });
+            }
+            else if (iter <= size.z) {
                 cube_pos.y += 1;
                 cube_pos.x += 1;
                 output_text += make_half_rectangle(cube_pos, { -1.f,-1.f,1.f });
@@ -169,16 +204,42 @@ struct BodyPart
             cube_pos.y -= size.y;
             cube_pos.x += pair.second - offset_b + 1;
 
-            if (iter <= size.z) {
+
+            if (iter == 1) {
+                cube_pos.z += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { 1.f,1.f,-1.f });
+            }
+            else if (iter == size.z) {
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter == size.z * (size.x - 1) + 1) {
+                cube_pos.x += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { -1.f,1.f,-1.f });
+            }
+            else if (iter == size.z * size.x) {
+                cube_pos.x += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { -1.f,1.f,1.f });
+            }
+            else if (iter <= size.z) {
                 cube_pos.x += 1;
                 output_text += make_half_rectangle(cube_pos, { -1.f,1.f,1.f });
             }
             else if (iter > (size.x - 1) * size.z) {
                 output_text += make_half_rectangle(cube_pos, { 1.f,1.f,1.f });
             }
-            else
+            else if (iter % static_cast<int>(size.z) == 1) {
+                //cube_pos.x += 1;
+                output_text += make_side1_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter % int(size.z) == 0) {
+                //cube_pos.x += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_rectangle(cube_pos, {1.f,1.f,-1.f });
+            }
+            else{
                 output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
-
+            }
         }
 
         tex_coords = coordinates["Right"];
@@ -197,8 +258,27 @@ struct BodyPart
             cube_pos.y += 1;
             cube_pos.x -= pair.second - offset_b - size.x;
 
-
-            if (iter <= size.z) {
+            if (iter == 1) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { -1.f,-1.f,-1.f });
+            }
+            else if (iter == size.z) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter == size.z * (size.x - 1) + 1) {
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { 1.f,-1.f,-1.f });
+            }
+            else if (iter == size.z * size.x) {
+                cube_pos.y += 1;
+                output_text += make_side1_one_third_of_rectangle(cube_pos, { 1.f,-1.f,1.f });
+            }
+            else if (iter <= size.z) {
                 cube_pos.y += 1;
                 output_text += make_half_rectangle(cube_pos, { 1.f,-1.f,1.f });
             }
@@ -206,6 +286,17 @@ struct BodyPart
                 cube_pos.y += 1;
                 cube_pos.x += 1;
                 output_text += make_half_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter % static_cast<int>(size.z) == 1) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                output_text += make_side1_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter % static_cast<int>(size.z) == 0) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_rectangle(cube_pos, { -1.f,-1.f,-1.f });
             }
             else
                 output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
@@ -216,9 +307,11 @@ struct BodyPart
         tex_coords = coordinates["Top"];
         offset_a = tex_coords[0].first;
         offset_b = tex_coords[0].second;
+        iter = 0;
 
         for (auto& pair : tex_coords)
         {
+            iter++;
             if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
                 continue;
 
@@ -226,15 +319,58 @@ struct BodyPart
             cube_pos.x -= pair.first - offset_a - size.x;
             cube_pos.y -= pair.second - offset_b;
             cube_pos.z += 1;
-            output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
+
+
+            if (iter == 1) {
+                output_text += make_one_third_of_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter == size.x) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                //output_text += make_one_third_of_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter == size.x * (size.y - 1) + 1) {
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                //output_text += make_one_third_of_rectangle(cube_pos, { 1.f,-1.f,-1.f });
+            }
+            else if (iter == size.x * size.y) {
+                cube_pos.y += 1;
+                //output_text += make_one_third_of_rectangle(cube_pos, { 1.f,-1.f,1.f });
+            }
+            else if (iter < size.x) {
+                cube_pos.z += 1;
+                output_text += make_side1_rectangle(cube_pos, { 1.f,1.f,-1.f });
+            }
+            else if (iter % static_cast<int>(size.x) == 0) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side2_rectangle(cube_pos, {-1.f,-1.f,-1.f });
+            }
+            else if (iter % static_cast<int>(size.x) == 1) {
+                cube_pos.z += 1;
+                output_text += make_side2_rectangle(cube_pos, { 1.f,1.f,-1.f });
+            }
+            else if (iter > (size.x - 1) * size.y) {
+                cube_pos.x += 1;
+                cube_pos.y += 1;
+                cube_pos.z += 1;
+                output_text += make_side1_rectangle(cube_pos, { -1.f,-1.f,-1.f });
+            }
+            else
+                output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
+            
         }
 
         tex_coords = coordinates["Bottom"];
         offset_a = tex_coords[0].first;
         offset_b = tex_coords[0].second;
+        iter = 0;
 
         for (auto& pair : tex_coords)
         {
+            iter++;
             if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
                 continue;
 
@@ -242,38 +378,26 @@ struct BodyPart
             cube_pos.x -= pair.first - offset_a - size.x;
             cube_pos.y -= pair.second - offset_b;
             cube_pos.z -= size.z;
-            output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
+            
+            if (iter < size.x) {
+                output_text += make_side1_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter % static_cast<int>(size.x) == 0) {
+                cube_pos.y += 1;
+                cube_pos.x += 1;
+                output_text += make_side2_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else if (iter % static_cast<int>(size.x) == 1) {
+                output_text += make_side2_rectangle(cube_pos, { 1.f,1.f,1.f });
+            }
+            else if (iter > (size.x - 1) * size.y) {
+                cube_pos.y += 1;
+                cube_pos.x += 1;
+                output_text += make_side1_rectangle(cube_pos, { -1.f,-1.f,1.f });
+            }
+            else
+                output_text += make_rectangle(cube_pos, { 1.f,1.f,1.f });
         }
-
-        //    for (auto& pair : tex_coords)
-        //    {
-        //        if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
-        //            continue;
-
-        //        cube_pos = starting_pos;
-        //        cube_pos.z += 1;// offset_a;
-        //        cube_pos.y -= pair.second;
-        //        //cube_pos.x += offset_x - pair.first + 4;
-        //        output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
-        //    }
-
-        //    tex_coords = coordinates["Bottom"];
-        //    //offset_x = tex_coords[0].first;
-        //    //offset_b = tex_coords[0].second;
-
-
-        //    for (auto& pair : tex_coords)
-        //    {
-        //        if (!(skin_to_apply.RGBA_2d_array[pair.first][pair.second] == skin_to_apply.colors[color_id]))
-        //            continue;
-
-        //        cube_pos = starting_pos;
-        //        cube_pos.z -= 12.f;
-        //        cube_pos.y -= pair.second;
-        //        //cube_pos.x += offset_x - pair.first + 4;
-        //        output_text += make_rectangle(cube_pos, { 1.f, 1.f, 1.f });
-        //    }
-        //    
     }
 
     std::string get_string() const

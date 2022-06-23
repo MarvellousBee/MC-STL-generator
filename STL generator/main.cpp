@@ -61,10 +61,9 @@ int main()
         return 1;
     }
     outf << "solid ASCII\n";
-    //outf << make_side1_rectangle({ 3.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
-    outf << make_side2_rectangle({ 1.f,1.f,1.f }, { -1.f,1.f,1.f });
-    //outf << make_half_rectangle({ 30.f,  30.f,  0.f }, { -1.f, -1.f, 1.f });
-
+    outf << make_rectangle({ 0.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
+    outf << make_side1_one_third_of_rectangle({ 0.f,2.f,0.f }, { 1.f,1.f,1.f });
+    outf << make_side2_one_third_of_rectangle({ 0.f,4.f,0.f }, { 1.f,1.f,1.f });
     
 
     return 0;
