@@ -45,13 +45,13 @@ int main()
 
         outf << "solid ASCII\n";
         outf << BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i }.get_string(); // size:  {  4.f,  8.f, 12.f  }
-        outf << BodyPart{ "Head" ,  { -2.f,0.f,38.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
+        outf << BodyPart{ "Head" ,  { -2.f,0.f,34.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
         
-        outf << BodyPart{ "Right Leg",  { 0.f, 3.f, 9.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        outf << BodyPart{ "Left Leg" ,  { 0.f,-7.f, 9.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
        
-        outf << BodyPart{ "Right Arm" ,  { 0.f,  8.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-        outf << BodyPart{ "Left Arm" ,   { 0.f,-12.f, 24.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
     }
 
     
@@ -62,8 +62,8 @@ int main()
     }
     outf << "solid ASCII\n";
     outf << make_rectangle({ 0.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
-    outf << make_side1_one_third_of_rectangle({ 0.f,2.f,0.f }, { 1.f,1.f,1.f });
-    outf << make_side2_one_third_of_rectangle({ 0.f,4.f,0.f }, { 1.f,1.f,1.f });
+    outf << make_one_third_of_rectangle({ 0.f,2.f,0.f }, { 1.f,1.f,1.f });
+
     
 
     return 0;
