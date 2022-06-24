@@ -144,16 +144,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="module.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EX1.stl" />
     <None Include="Input.stl" />
     <None Include="png_to_txt.py" />
-    <None Include="Quantize.py" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="output.png" />
     <Image Include="skin.png" />
   </ItemGroup>
   <ItemGroup>

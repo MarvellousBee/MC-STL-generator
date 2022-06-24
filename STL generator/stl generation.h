@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+#include <string>
+#include <cassert>
 #include "XValues.h"
 
 

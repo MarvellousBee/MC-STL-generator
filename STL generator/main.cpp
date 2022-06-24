@@ -26,7 +26,7 @@ int main()
     std::vector<std::string> mc_skin_documentation{};
     mc_skin_documentation.reserve(constants::num_of_pixels * constants::num_of_pixels);
     std::string temp;
-    std::ifstream skin_documentation_file("py_output.txt");
+    std::ifstream skin_documentation_file("text_output.txt");
     int i{ -1 };
     while (getline(skin_documentation_file, temp))
         mc_skin_documentation.push_back(temp);//(*mc_skin_documentation)[i] = temp;
@@ -35,11 +35,17 @@ int main()
     Skin skin{ mc_skin_documentation, text_data };
     text_data.close();
 
+    int file_id{ -1 };
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
-        std::ofstream outf{ "EX" + std::to_string(i) + ".stl"};
+        if (skin.colors[i][3] == 0)
+            continue;
+
+       
+
+        std::ofstream outf{ "EX" + std::to_string(++file_id) + ".stl"};
         if (!outf){
-            std::cerr << "Could not open  EX" + std::to_string(i) + ".stl for writing!\n";
+            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for writing!\n";
             return 1;
         }
 
@@ -52,6 +58,8 @@ int main()
        
         outf << BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
         outf << BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+
+        
     }
 
     

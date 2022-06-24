@@ -31,9 +31,6 @@ struct BodyPart
         : pos(_pos)
         , skin(skin_to_apply)
     {
-        //core
-        //output_text += make_rectangle(pos, size);
-        //front
 
         std::map<std::string, std::vector<std::pair<int, int>>> coordinates{
             { "Front" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Front")) }
@@ -53,12 +50,7 @@ struct BodyPart
         auto starting_pos{ pos };
         auto cube_pos{ pos };
 
-
-        //auto center_pos{ _pos };
-        //center_pos.y -= size.y - 1;
-        //center_pos.x += 1;
-        //center_pos.z -= size.z - 1;
-        //output_text += make_rectangle(center_pos, size);
+        
 
 
         auto tex_coords{ coordinates["Front"] };
@@ -66,6 +58,21 @@ struct BodyPart
         auto offset_b = tex_coords[0].second;
         int iter{ 0 };
 
+        // add a non-colored box inside the part to make it sturdier
+        constexpr static Values4 white{ 255, 255, 255, 255 };
+        //std::cout << skin_to_apply.colors[color_id];
+        if (skin_to_apply.colors[color_id] == white) {
+            auto inner_cube_pos{ pos };
+            inner_cube_pos.x += 1;
+            inner_cube_pos.y -= size.y - 2;
+            inner_cube_pos.z -= size.z - 2;
+            auto inner_cube_size{ size };
+            inner_cube_size.x -= 2;
+            inner_cube_size.y -= 2;
+            inner_cube_size.z -= 2;
+            output_text += make_rectangle(inner_cube_pos, inner_cube_size);
+        }
+            
         for (auto& pair : tex_coords)
         {
             iter++;
@@ -298,6 +305,7 @@ struct BodyPart
             cube_pos = starting_pos;
             cube_pos.x -= pair.first - offset_a - size.x + 1;
             cube_pos.y -= pair.second - offset_b;
+            //cube_pos.z -= 4;
 
 
             if (iter == 1) {

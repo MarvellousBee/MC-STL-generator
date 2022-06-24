@@ -3,6 +3,15 @@
 struct Values4
 {
     long double val[4]{ 0,0,0,0 };
+
+    Values4() {};
+    constexpr Values4(int&& a, int&& b, int&& c, int&& d){
+        val[0] = a;
+        val[1] = b;
+        val[2] = c;
+        val[3] = d;
+    }
+
     long double& operator[] (const int& i)
     {
         return val[i];
@@ -18,6 +27,14 @@ struct Values4
                 return false;
         return true;
     }
+    template <class T>
+    bool operator ==(const T& arg)
+    {
+        for (int i{ 0 }; i < 4; i++)
+            if (val[i] != arg[i])
+                return false;
+        return true;
+    }
     friend bool operator ==(const Values4& arg1, const Values4& arg2);
 };
 bool operator ==(const Values4& arg1, const Values4& arg2)
@@ -26,6 +43,12 @@ bool operator ==(const Values4& arg1, const Values4& arg2)
         if (arg1.val[i] != arg2.val[i])
             return false;
     return true;
+}
+std::ostream& operator<<(std::ostream& os, const Values4& rhs)
+{
+    for (int i{ 0 }; i < 4; i++)
+        os << rhs.val[i] << ' ';
+    return os;
 }
 
 struct Point3f

@@ -18,16 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="module.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Input.stl">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Quantize.py">
-      <Filter>Source Files</Filter>
     </None>
     <None Include="png_to_txt.py">
       <Filter>Source Files</Filter>
@@ -38,6 +32,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="skin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="output.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
