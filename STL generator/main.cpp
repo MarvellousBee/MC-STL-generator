@@ -15,14 +15,6 @@
 
 int main()
 {
-    //std::ofstream outf{ "Input.stl" };
-
-    //if (!outf){
-    //    std::cerr << "Could not open the  STL file for writing!\n";
-    //    return 1;
-    //}
-    
-
     std::vector<std::string> mc_skin_documentation{};
     mc_skin_documentation.reserve(constants::num_of_pixels * constants::num_of_pixels);
     std::string temp;
@@ -35,42 +27,74 @@ int main()
     Skin skin{ mc_skin_documentation, text_data };
     text_data.close();
 
+    
+    std::map<std::string, std::vector<Point3f>> taken_pixels{
+        {"Front", {}}
+    ,   {"Back", {}}
+    ,   {"Left", {}}
+    ,   {"Right", {}}
+    ,   {"Top", {}}
+    ,   {"Bottom", {}}
+    };
+    for (auto& [side, vec] : taken_pixels)
+        vec.reserve(64 * 64); // excessive, but does not matter
+
     int file_id{ -1 };
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
         if (skin.colors[i][3] == 0)
             continue;
 
-       
-
-        std::ofstream outf{ "EX" + std::to_string(++file_id) + ".stl"};
+        std::ofstream outf{ "STL_output/EX" + std::to_string(++file_id) + ".stl"};
         if (!outf){
-            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for writing!\n";
+            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for WRITING!\n";
             return 1;
         }
-
-        outf << "solid ASCII\n";
-        outf << BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i }.get_string(); // size:  {  4.f,  8.f, 12.f  }
-        outf << BodyPart{ "Head" ,  { -2.f,0.f,34.f }, skin, i }.get_string(); // size:  {  8.f,  8.f,  8.f  }
         
-        outf << BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        outf << BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, i }.get_string();// size:  {  4.f,  4.f,  12.f  }
-       
-        outf << BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-        outf << BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        outf << "solid ASCII\n";//
+        // Layer 2
+        // is dealt with first, so it covers up whatever it needs to cover first.
+        outf << BodyPart{ "Helm",  { -2.f,0.f,34.f  }, skin, i, taken_pixels, true }.get_string();
+        //outf << BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  8.f, 12.f  }
+        //outf << BodyPart{ "Right Leg Layer 2",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels, true }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Left Leg Layer 2" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels, true }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Right Arm Layer 2" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+    }
+    file_id = -1;
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+    {
+        if (skin.colors[i][3] == 0)
+            continue;
 
-        
+        std::ofstream outf{ "STL_output/EX" + std::to_string(++file_id) + ".stl",  std::ios::app };
+        if (!outf) {
+            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for APPENDING!\n";
+            return 1;
+        }
+        // Layer 1
+
+        outf << BodyPart{ "Head" ,  { -2.f,0.f,34.f }, skin, i, taken_pixels }.get_string(); // size:  {  8.f,  8.f,  8.f  }
+        //outf << BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  8.f, 12.f  }
+        ////
+
+        //outf << BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels }.get_string();// size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels }.get_string();// size:  {  4.f,  4.f,  12.f  }
+
+        //outf << BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+        //outf << BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  4.f,  12.f  }
+
     }
 
     
-    std::ofstream outf{ "test.stl" };
-    if (!outf) {
-        std::cerr << "test.stl for writing!\n";
-        return 1;
-    }
-    outf << "solid ASCII\n";
-    outf << make_rectangle({ 0.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
-    outf << make_one_third_of_rectangle({ 0.f,2.f,0.f }, { 1.f,1.f,1.f });
+    //std::ofstream outf{ "test.stl" };
+    //if (!outf) {
+    //    std::cerr << "test.stl for writing!\n";
+    //    return 1;
+    //}
+    //outf << "solid ASCII\n";
+    //outf << make_rectangle({ 0.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
+    //outf << make_one_third_of_rectangle({ 0.f,2.f,0.f }, { 1.f,1.f,1.f });
 
     
 

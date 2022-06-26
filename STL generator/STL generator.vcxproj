@@ -147,7 +147,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EX1.stl" />
     <None Include="Input.stl" />
     <None Include="png_to_txt.py" />
   </ItemGroup>
@@ -164,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="plane_coords.txt" />
-    <Text Include="py_output.txt" />
+    <Text Include="text_output.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

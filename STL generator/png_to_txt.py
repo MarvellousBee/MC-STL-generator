@@ -48,7 +48,6 @@ unique_colors = get_unique_colors(result)
 to_white_thresh = 200
 white_candidates = []
 for i in unique_colors:
-    print(i)
     if ( sum(i[:3]) / len(i[:3]) > to_white_thresh):
         white_candidates.append(i)
 
@@ -81,3 +80,4 @@ pixel_values = list(im.getdata())
 width, height = im.size
 pixel_values = np.array(pixel_values)
 np.savetxt("text_output.txt", pixel_values)
+print("Done!")

@@ -7,6 +7,7 @@
 
 Point3f get_normal(std::vector<Point3f> v)
 {
+
     auto V{ v[1] - v[0] };
     auto W{ v[2] - v[0] };
 
@@ -18,26 +19,32 @@ Point3f get_normal(std::vector<Point3f> v)
     return N / N.sum();
 }
 
-std::string make_facet(std::vector<Point3f> v)
+
+
+std::string make_facet(std::vector<Point3f> v, Point3f nrml)
 {
     assert(v.size() == 3);
     std::string output{ "  facet normal " };
-
-    auto nrml = get_normal(v);
     output.append(std::to_string(nrml.x) + ' ' + std::to_string(nrml.y) + ' ' + std::to_string(-nrml.z));
 
     output.append("\n  outer loop\n");
 
+    constexpr static float size_multiplier{ 3.25f };
+
     for (int i{ 0 }; i < 3; i++)
         output.append("    vertex   "
-            + std::to_string(v[i].x) + ' '
-            + std::to_string(v[i].y) + ' '
-            + std::to_string(v[i].z) + '\n'
+            + std::to_string(v[i].x * size_multiplier) + ' '
+            + std::to_string(v[i].y * size_multiplier) + ' '
+            + std::to_string(v[i].z * size_multiplier) + '\n'
         );
     output.append("  endloop\n");
     output.append("endfacet\n");
 
     return output;
+}
+std::string make_facet(std::vector<Point3f> v)
+{
+    return make_facet(v, get_normal(v));
 }
 
 std::string make_plane(

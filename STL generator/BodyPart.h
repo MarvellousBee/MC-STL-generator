@@ -19,6 +19,13 @@ std::vector<std::pair<int, int>> all_coordinates(Values4 input)
     return output;
 }
 
+bool is_pos_taken(const std::vector<Point3f>& taken_coordinates, const Point3f& cube_pos)
+{
+    return std::find(taken_coordinates.begin(), taken_coordinates.end(), cube_pos) != taken_coordinates.end();
+}
+namespace {
+    
+}
 
 struct BodyPart
 {
@@ -27,7 +34,7 @@ struct BodyPart
     
     std::string output_text{ "" };
 
-    BodyPart(std::string part_name, const Point3f _pos, const Skin& skin_to_apply, const int& color_id)
+    BodyPart(std::string part_name, const Point3f _pos, const Skin& skin_to_apply, const int& color_id, std::map<std::string, std::vector<Point3f>>& taken_coordinates,  const bool& is_outer = false)
         : pos(_pos)
         , skin(skin_to_apply)
     {
@@ -61,7 +68,7 @@ struct BodyPart
         // add a non-colored box inside the part to make it sturdier
         constexpr static Values4 white{ 255, 255, 255, 255 };
         //std::cout << skin_to_apply.colors[color_id];
-        if (skin_to_apply.colors[color_id] == white) {
+        if ( !is_outer and skin_to_apply.colors[color_id] == white) {
             auto inner_cube_pos{ pos };
             inner_cube_pos.x += 1;
             inner_cube_pos.y -= size.y - 2;
@@ -84,6 +91,10 @@ struct BodyPart
             cube_pos.y -= pair.second - offset_b;
             
 
+            if (is_pos_taken(taken_coordinates["Front"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Front"].push_back(cube_pos);
   
             if (iter == 1){
                 cube_pos.x += 1;
@@ -137,6 +148,11 @@ struct BodyPart
             cube_pos.z -= pair.first - offset_a;
             cube_pos.y += pair.second - offset_b - size.y + 1;
             cube_pos.x += size.x - 1;
+
+            if (is_pos_taken(taken_coordinates["Back"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Back"].push_back(cube_pos);
 
             if (iter == 1) {
                 cube_pos.z += 1;
@@ -192,6 +208,10 @@ struct BodyPart
             cube_pos.y -= size.y - 1;
             cube_pos.x += pair.second - offset_b;
 
+            if (is_pos_taken(taken_coordinates["Left"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Left"].push_back(cube_pos);
 
             if (iter == 1) {
                 cube_pos.z += 1;
@@ -244,6 +264,11 @@ struct BodyPart
             cube_pos = starting_pos;
             cube_pos.z -= pair.first - offset_a;
             cube_pos.x -= pair.second - offset_b - size.x + 1;
+
+            if (is_pos_taken(taken_coordinates["Right"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Right"].push_back(cube_pos);
 
             if (iter == 1) {
                 cube_pos.x += 1;
@@ -305,8 +330,11 @@ struct BodyPart
             cube_pos = starting_pos;
             cube_pos.x -= pair.first - offset_a - size.x + 1;
             cube_pos.y -= pair.second - offset_b;
-            //cube_pos.z -= 4;
-
+            
+            if (is_pos_taken(taken_coordinates["Top"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Top"].push_back(cube_pos);
 
             if (iter == 1) {
                 cube_pos.y += 1;
@@ -370,6 +398,10 @@ struct BodyPart
             cube_pos.y -= pair.second - offset_b;
             cube_pos.z -= size.z - 1;
             
+            if (is_pos_taken(taken_coordinates["Bottom"], cube_pos))
+                continue;
+            else
+                taken_coordinates["Bottom"].push_back(cube_pos);
 
             if (iter == 1) {
                 cube_pos.y += 1;
