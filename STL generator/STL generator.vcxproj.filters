@@ -26,6 +26,9 @@
     <None Include="png_to_txt.py">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="stl_parser.py">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="skin.png">
@@ -49,6 +52,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="BodyPart.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_templates.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

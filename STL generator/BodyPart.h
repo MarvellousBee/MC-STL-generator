@@ -371,7 +371,7 @@ struct BodyPart
                 cube_pos.z += 1;
                 output_text += make_side2_rectangle(cube_pos, { 1.f,1.f,-1.f });
             }
-            else if (iter > (size.x - 1) * size.y) {
+            else if (iter > (size.y - 1) * size.x) {
                 cube_pos.x += 1;
                 cube_pos.y += 1;
                 cube_pos.z += 1;
@@ -430,7 +430,7 @@ struct BodyPart
             else if (iter % static_cast<int>(size.x) == 1) {
                 output_text += make_side2_rectangle(cube_pos, { 1.f,1.f,1.f });
             }
-            else if (iter > (size.x - 1) * size.y) {
+            else if (iter > (size.y - 1) * size.x) {
                 cube_pos.y += 1;
                 cube_pos.x += 1;
                 output_text += make_side1_rectangle(cube_pos, { -1.f,-1.f,1.f });

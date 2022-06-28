@@ -149,6 +149,7 @@
   <ItemGroup>
     <None Include="Input.stl" />
     <None Include="png_to_txt.py" />
+    <None Include="stl_parser.py" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="output.png" />
@@ -156,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BodyPart.h" />
+    <ClInclude Include="stl_templates.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Skin.h" />
     <ClInclude Include="XValues.h" />
     <ClInclude Include="SkinStructure.h" />

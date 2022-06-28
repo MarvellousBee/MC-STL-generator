@@ -1,5 +1,5 @@
 #pragma once
-
+#include <ostream>
 struct Values4
 {
     long double val[4]{ 0,0,0,0 };
@@ -56,6 +56,12 @@ struct Point3f
     long double x;
     long double y;
     long double z;
+    //Point3f(int _x, int _y, int _z) : x(static_cast<long double>(_x))
+    //                                , y(static_cast<long double>(_y))
+    //                                , z(static_cast<long double>(_z))
+    //{};
+    //Point3f() {};
+
     Point3f& operator -(const Point3f& a2)
     {
         x -= a2.x;
