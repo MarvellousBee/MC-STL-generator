@@ -53,62 +53,71 @@ int main()
     ,   {"Top", {}}
     ,   {"Bottom", {}}
     };
+
+    // excessive, but does not matter
     for (auto& [side, vec] : taken_pixels)
-        vec.reserve(64 * 64); // excessive, but does not matter
+        vec.reserve(64 * 64);
+
+    std::vector<std::vector<StlTemplates::STLtriangle>> triangles;
+
+    triangles.resize(skin.colors.size());
+    for (auto& vec : triangles)
+        vec.reserve(64 * 64);
+
+    //int file_id{ -1 };
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+    {
+        if (skin.colors[i][3] == 0)
+            continue;
+        // Layer 2
+        // is dealt with first, so it covers up whatever it needs to cover first.
+        add_vectors(triangles[i], BodyPart{"Helm", {-2.f,0.f,34.f}, skin, i, taken_pixels, true}.get_triangles());
+        
+        add_vectors(triangles[i], BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, i, taken_pixels, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+        add_vectors(triangles[i], BodyPart{ "Right Leg Layer 2",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Left Leg Layer 2" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Right Arm Layer 2" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    }
+    //file_id = -1;
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+    {
+        if (skin.colors[i][3] == 0)
+            continue;
+        // Layer 1
+        add_vectors(triangles[i], BodyPart{ "Head", { -2.f,0.f,34.f }, skin, i, taken_pixels }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
+        add_vectors(triangles[i], BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i, taken_pixels }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+        add_vectors(triangles[i], BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+        add_vectors(triangles[i], BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+
+    }
 
     int file_id{ -1 };
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
         if (skin.colors[i][3] == 0)
             continue;
-
-        std::ofstream outf{ "STL_output/EX" + std::to_string(++file_id) + ".stl"};
-        if (!outf){
-            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for WRITING!\n";
-            return 1;
-        }
-        
-        outf << "solid ASCII\n";//
-        // Layer 2
-        // is dealt with first, so it covers up whatever it needs to cover first.
-        outf << BodyPart{ "Helm",  { -2.f,0.f,34.f  }, skin, i, taken_pixels, true }.get_string();
-        //outf << BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  8.f, 12.f  }
-        //outf << BodyPart{ "Right Leg Layer 2",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels, true }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Left Leg Layer 2" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels, true }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Right Arm Layer 2" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels, true }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-    }
-    file_id = -1;
-    for (int i{ 0 }; i < skin.colors.size(); i++)
-    {
-        if (skin.colors[i][3] == 0)
-            continue;
-
-        std::ofstream outf{ "STL_output/EX" + std::to_string(++file_id) + ".stl",  std::ios::app };
+        std::ofstream outf{ "STL_output/EX" + std::to_string(++file_id) + ".stl" };
         if (!outf) {
-            std::cerr << "Could not open  EX" + std::to_string(file_id) + ".stl for APPENDING!\n";
+            std::cerr << "Could not open EX" + std::to_string(file_id) + ".stl for WRITING!\n";
             return 1;
         }
-        // Layer 1
-
-        outf << BodyPart{ "Head" ,  { -2.f,0.f,34.f }, skin, i, taken_pixels }.get_string(); // size:  {  8.f,  8.f,  8.f  }
-        //outf << BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  8.f, 12.f  }
-        //outf << BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, i, taken_pixels }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, i, taken_pixels }.get_string();// size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-        //outf << BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, i, taken_pixels }.get_string(); // size:  {  4.f,  4.f,  12.f  }
-
+        outf << "solid ASCII\n";
+        for (auto& i : triangles[i])
+            outf << make_facet(i);
     }
-
     
-    std::ofstream outf{ "STL_output/test.stl" };
-    if (!outf) {
-        std::cerr << "test.stl for writing!\n";
-        return 1;
-    }
-    outf << "solid ASCII\n";
+    
+    //std::ofstream outf{ "STL_output/test.stl" };
+    //if (!outf) {
+    //    std::cerr << "test.stl for writing!\n";
+    //    return 1;
+    //}
+    //outf << "solid ASCII\n";
     //outf << make_rectangle({ 0.f,  0.f,  0.f }, { 1.f, 1.f, 1.f });
-    outf << test_all(make_rectangle);
-
+    //outf << test_all(make_rectangle);
+    //outf << make_object({ 0,0,0 }, "ru quarter cube 1");
     return 0;
 }

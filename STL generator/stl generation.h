@@ -41,9 +41,34 @@ std::string make_facet(std::vector<Point3f> v, Point3f nrml)
 
     return output;
 }
+
 std::string make_facet(std::vector<Point3f> v)
 {
     return make_facet(v, get_normal(v));
+}
+std::string make_facet(StlTemplates::STLtriangle t)
+{
+    return make_facet(t.coordinates, t.normal);
+}
+
+StlTemplates::STLtriangle make_facet_object(std::vector<Point3f> v, Point3f nrml)
+{
+    assert(v.size() == 3);
+    StlTemplates::STLtriangle output;
+
+    constexpr static float size_multiplier{ 3.25f };
+
+    output.normal = nrml;
+
+    for (int i{ 0 }; i < 3; i++)
+        output.coordinates.push_back({
+              v[i].x * size_multiplier
+            , v[i].y * size_multiplier
+            , v[i].z * size_multiplier
+            }
+        );
+
+    return output;
 }
 
 enum side
@@ -114,9 +139,11 @@ std::string make_plane(
 
 // To be specific: makes a 3D rectangular prism
 
-std::string make_object(const Point3f& origin, const std::string& type)
+std::vector<StlTemplates::STLtriangle> make_object(const Point3f& origin, const std::string& type)
 {
-    std::string output{ "" };
+    //assert(StlTemplates::template_map.find(type) != StlTemplates::template_map.end());
+
+    std::vector<StlTemplates::STLtriangle> output;
     auto templ { StlTemplates::template_map[type] };
 
     for (auto& fct : templ)
@@ -127,12 +154,30 @@ std::string make_object(const Point3f& origin, const std::string& type)
             point.y += origin.y;
             point.z += origin.z;
         }
-        output += make_facet(fct.coordinates, fct.normal);
+        output.push_back(make_facet_object(fct.coordinates, fct.normal));
     }
+    assert(output.size() > 0);
+    return output;
+}
+std::vector<StlTemplates::STLtriangle> make_rectangle(const Point3f& origin, const Point3f& size)
+{
+    std::vector<StlTemplates::STLtriangle> output;
+
+    for (int x{0}; x < size.x;x++)
+        for (int y{ 0 }; y < size.y; y++)
+            for (int z{ 0 }; z < size.z; z++)
+            {
+                auto temp{ origin };
+                temp.x += x;
+                temp.y += y;
+                temp.z += z;
+                auto obj{ make_object(temp, "cube") };
+                output.insert(output.end(), obj.begin(), obj.end());
+            }
     return output;
 }
 
-std::string make_rectangle(const Point3f& origin, const Point3f& size)
+std::string make_rectangle_classic(const Point3f& origin, const Point3f& size)
 {
     std::string output{ "" };
     auto temp{ origin };

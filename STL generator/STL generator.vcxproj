@@ -160,6 +160,7 @@
     <ClInclude Include="stl_templates.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Skin.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="XValues.h" />
     <ClInclude Include="SkinStructure.h" />
     <ClInclude Include="stl generation.h" />
