@@ -12,7 +12,7 @@ void add_vectors(std::vector<T>& lhs, std::vector<T>&& rhs)
     lhs.insert(lhs.end(), rhs.begin(), rhs.end());
 }
 
-template <class T>//too lazy to remember/look up how to point to a function
+template <class T>// TODO : look up how to point to a function
 std::string test_all(T function)
 {
     std::string out{ "" };

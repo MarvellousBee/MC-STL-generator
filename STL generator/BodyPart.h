@@ -66,9 +66,6 @@ public:
         auto starting_pos{ pos };
         auto cube_pos{ pos };
 
-        
-
-
         auto tex_coords{ coordinates["Front"] };
         auto offset_a = tex_coords[0].first;
         auto offset_b = tex_coords[0].second;
@@ -78,7 +75,7 @@ public:
         // add a non-colored box inside the part to make it sturdier
         constexpr static Values4 white{ 255, 255, 255, 255 };
         //std::cout << skin_to_apply.colors[color_id];
-        if ( !is_outer and skin_to_apply.colors[color_id] == white) {
+        if ( !is_outer && skin_to_apply.colors[color_id] == white) {
             auto inner_cube_pos{ pos };
             inner_cube_pos.x += 1;
             inner_cube_pos.y -= size.y - 2;
@@ -333,43 +330,6 @@ public:
             else
                 add_vectors(temp_triangles, make_object(cube_pos, "cube"));
         }
-
-
-        // clean up internal geometry
-        // vector of chars instead of bools for safety
-
-        //std::vector<char> active_triangles(temp_triangles.size(), '1');
-        //for (int i{ 0 }; i < temp_triangles.size(); i++)
-        //    for (int j{ i + 1 }; j < temp_triangles.size(); j++)
-        //        if (temp_triangles[i].same_poition(temp_triangles[j])) // operator== can get fooled here, since triangles may have their points in different order.
-        //        {
-        //            active_triangles[i] = '0';
-        //            active_triangles[j] = '0';
-        //            std::cout << "HIT ";
-        //        }   
-        // 
-        // TODO : THIS IS GARBAGE, COME UP WITH SOMETHING BETTER
-        // check cubes
-        //if (active_triangles.size() >= 4)
-        //    for (int a{ 0 }; a < temp_triangles.size()-3; a++)
-        //        if (active_triangles[a] == '1')
-        //            for (int b{ a + 1 }; b < temp_triangles.size() - 2; b++)
-        //                if (active_triangles[b] == '1')
-        //                    for (int c{ b + 1 }; c < temp_triangles.size() - 1; c++)
-        //                        if (active_triangles[c] == '1')
-        //                            for (int d{ c + 1 }; d < temp_triangles.size(); d++)
-        //                                if (active_triangles[d] == '1')
-        //                                    if (StlTemplates::is_overlapping_rectangle({ temp_triangles[a], temp_triangles[b], temp_triangles[c], temp_triangles[d] }))
-        //                                    {
-        //                                        active_triangles[a] = '0';
-        //                                        active_triangles[b] = '0';
-        //                                        active_triangles[c] = '0';
-        //                                        active_triangles[d] = '0';
-
-        //                                        std::cout << "HIT\n";
-        //                                    }
-        //                                    else
-        //                                        std::cout << a << ' ' << b << ' ' << c << ' ' << d << '\n';
         
         for (int i{ 0 }; i < temp_triangles.size(); i++)
             //if (active_triangles[i] == '1')

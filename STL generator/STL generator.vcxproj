@@ -157,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BodyPart.h" />
-    <ClInclude Include="stl_templates.h" />
+    <ClInclude Include="StlTemplates.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Skin.h" />
     <ClInclude Include="Utils.h" />

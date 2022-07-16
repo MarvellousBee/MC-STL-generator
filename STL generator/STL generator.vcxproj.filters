@@ -57,7 +57,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stl_templates.h">
+    <ClInclude Include="StlTemplates.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">

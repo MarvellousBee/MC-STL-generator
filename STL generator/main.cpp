@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <filesystem>
 
 #include "stl generation.h"
 #include "XValues.h"
@@ -12,7 +13,7 @@
 #include "Skin.h"
 #include "SkinStructure.h"
 #include "BodyPart.h"
-#include "stl_templates.h"
+#include "StlTemplates.h"
 //#include "Utils.h"
 int main()
 {
@@ -38,7 +39,6 @@ int main()
     ,   {"Bottom", {}}
     };
 
-    // excessive, but does not matter
     for (auto& [side, vec] : taken_pixels)
         vec.reserve(64 * 64);
 
@@ -53,6 +53,9 @@ int main()
     {
         if (skin.colors[i][3] == 0)
             continue;
+
+        //std::cout << skin.colors[i][0] << ' ' << skin.colors[i][1] << ' ' << skin.colors[i][2] << ' ' << '\n';
+
         // Layer 2
         // is dealt with first, so it covers up whatever it needs to cover first.
         add_vectors(triangles[i], BodyPart{"Helm", {-2.f,0.f,34.f}, skin, i, taken_pixels, true}.get_triangles());
@@ -78,7 +81,15 @@ int main()
 
     }
 
-    int file_id{ -1 };
+    int file_id{ 0 };
+    //delete all previous files
+    for (int i{ 0 }; i < 10; i++)
+    {
+        std::string file{ "STL_output/EX" + std::to_string(i) + ".stl" };
+        std::filesystem::remove(file);
+    }
+        
+
     for (int i{ 0 }; i < skin.colors.size(); i++)
     {
         if (skin.colors[i][3] == 0)

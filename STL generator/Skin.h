@@ -49,6 +49,7 @@ struct Skin
                         new_color = false;
                         break;
                     }
+                //std::cout << RGBA_2d_array[x][y][0] << ' ' << RGBA_2d_array[x][y][1] << ' ' << RGBA_2d_array[x][y][2] << ' ' << '\n';
                 if (new_color)
                     colors.push_back(RGBA_2d_array[x][y]);
             }

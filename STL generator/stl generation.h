@@ -3,7 +3,7 @@
 #include <string>
 #include <cassert>
 #include "XValues.h"
-#include "stl_templates.h"
+#include "StlTemplates.h"
 
 std::string make_facet(std::vector<Point3f> v, Point3f nrml)
 {

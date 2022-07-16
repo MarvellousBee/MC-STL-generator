@@ -1,2 +1,2 @@
 
-    """
+    for d in result:

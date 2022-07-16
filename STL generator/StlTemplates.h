@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "XValues.h"
 
+
 namespace StlTemplates
 {
     struct STLtriangle
@@ -18,9 +19,9 @@ namespace StlTemplates
             for (int a{ 0 }; a < 4; a++)
                 if (coordinates[0] == rhs.coordinates[a])
                     for (int b{ 0 }; b < 4; b++)
-                        if (b != a and coordinates[1] == rhs.coordinates[b])
+                        if (b != a && coordinates[1] == rhs.coordinates[b])
                             for (int c{ 0 }; c < 4; c++)
-                                if (c != a and c != b and coordinates[2] == rhs.coordinates[c])
+                                if (c != a && c != b && coordinates[2] == rhs.coordinates[c])
                                     return true;
 
             return false;
@@ -42,7 +43,7 @@ namespace StlTemplates
         std::vector sizes{ x_values.size(), y_values.size(), z_values.size() };
         std::sort(sizes.begin(), sizes.end());
 
-        return sizes[0] == 1 and sizes[1] == 1 and sizes[2] == 2;
+        return sizes[0] == 1 && sizes[1] == 1 && sizes[2] == 2;
     }
 
     std::map<std::string, std::vector<STLtriangle>> template_map
@@ -1771,7 +1772,7 @@ namespace StlTemplates
     }
 }}
         },
-            // 1st word specifies distance between the "spike" and z axis
+            // 1st word specifies distance between the "spike" && z axis
         {
             "close down quarter cube",
             {{
