@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Constants.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Input.stl" />

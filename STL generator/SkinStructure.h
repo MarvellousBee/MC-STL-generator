@@ -2,14 +2,17 @@
 #include <map>
 #include <string>
 #include <fstream>
-
+#include <vector>
+#include "Constants.h"
 #include "XValues.h"
+#include "Skin.h"
+#include "BodyPart.h"
 
-
-std::map<std::string, std::map<std::string, Values4>> get_skin_structure(std::ifstream& raw_rgb_file)
+std::map<std::string, std::map<std::string, Values4>> get_skin_structure(std::string raw_rgb_file_name = "text_output.txt")
 {
     std::map<std::string, std::map<std::string, Values4>> skin_structure;
     std::string temp;
+    std::ifstream raw_rgb_file(raw_rgb_file_name);
 
     while (getline(raw_rgb_file, temp))
     {
@@ -52,5 +55,65 @@ std::map<std::string, std::map<std::string, Values4>> get_skin_structure(std::if
             skin_structure[token.substr(0, token_del)][token.substr(token_del + 3)] = coords;
         }
     }
+    raw_rgb_file.close();
     return skin_structure;
+}
+
+
+
+std::vector<std::string> get_custom_skin_colors(std::string path = "text_output.txt")
+{
+    std::vector<std::string> mc_skin{};
+    mc_skin.reserve(constants::num_of_pixels * constants::num_of_pixels);
+    std::string temp;
+    std::ifstream skin_file(path);
+    int i{ -1 };
+    while (getline(skin_file, temp))
+        mc_skin.push_back(temp);//(*mc_skin_documentation)[i] = temp;
+    skin_file.close();
+    return mc_skin;
+}
+
+std::map<std::string, std::vector<Point3f>> init_taken_pixels_storage()
+{
+    std::map<std::string, std::vector<Point3f>> taken_pixels{
+        {"Front", {}}
+    ,   {"Back", {}}
+    ,   {"Left", {}}
+    ,   {"Right", {}}
+    ,   {"Top", {}}
+    ,   {"Bottom", {}}
+    };
+    for (auto& [side, vec] : taken_pixels)
+        vec.reserve(64 * 64);
+    return taken_pixels;
+}
+
+std::vector<std::vector<StlTemplates::STLtriangle>> init_facets_storage(Skin& skin)
+{
+    std::vector<std::vector<StlTemplates::STLtriangle>> triangles;
+    triangles.resize(skin.colors.size());
+    for (auto& vec : triangles)
+        vec.reserve(64 * 64);
+    return triangles;
+}
+
+void add_outer_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+{
+    add_vectors(color, BodyPart{ "Helm", {-2.f,0.f,34.f}, skin, iter, taken_pixels, true }.get_triangles());
+    add_vectors(color, BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(color, BodyPart{ "Right Leg Layer 2",  { 0.f, 0.f, 14.f }, skin, iter, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Leg Layer 2" ,  { 0.f,-4.f, 14.f }, skin, iter, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Right Arm Layer 2" ,  { 0.f,  4.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+}
+
+void add_inner_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+{
+    add_vectors(color, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
+    add_vectors(color, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(color, BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, iter, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, iter, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
 }

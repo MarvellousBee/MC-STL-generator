@@ -17,7 +17,7 @@ def get_unique_colors(img):
     for line in img:
         for color in line:
             color_tuple = tuple(color)
-            if int(color[3]) != 0 && color_tuple not in uniqueColors:
+            if int(color[3]) != 0 and color_tuple not in uniqueColors:
                 uniqueColors.append(color_tuple)
     return uniqueColors
 
@@ -81,14 +81,22 @@ input()
 image2 = cv2.imread('output.png', flags = cv2.IMREAD_UNCHANGED)
 
 unique_colors = get_unique_colors(image2)
-assert len(unique_colors) <= num_of_colors or (len(unique_colors) <= num_of_colors-1 && max_color == -1)
+assert len(unique_colors) <= num_of_colors or (len(unique_colors) <= num_of_colors-1 and max_color == -1)
 
 
-#for some reason, they R && B values get swapped along the way, but the image renders fine!
+#for some reason, they R and B values get swapped along the way, but the image renders fine!
 #fix colors for display
 marker_colors = []
+
+
 for pixel in unique_colors:
-    #for some reason, R && B values get swapped along the way. I'm fixing that here.
+    if tuple(white[:3]) == pixel[:3]:
+        marker_colors.append(white)
+
+for pixel in unique_colors:
+    if tuple(white[:3]) == pixel[:3]:
+        continue
+    #for some reason, R and B values get swapped along the way. I'm fixing that here.
     temp = []
     prev_color = pixel[0]
     temp.append(pixel[2])

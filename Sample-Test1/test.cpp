@@ -26,6 +26,7 @@ TEST(TestXValues, Point3f) {
 
     EXPECT_FALSE(p1 == p2);
 }
+
 TEST(ObjectGeneration, make_facet) {
     auto facet
     { 

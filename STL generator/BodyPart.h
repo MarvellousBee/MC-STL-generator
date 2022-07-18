@@ -30,6 +30,8 @@ class BodyPart
 public:
     const Point3f pos;
     const Skin& skin;
+    // add a non-colored box inside the part to make it sturdier
+    constexpr static Values4 white{ 255, 255, 255, 255 };
     
 
     auto get_triangles()
@@ -71,9 +73,6 @@ public:
         auto offset_b = tex_coords[0].second;
         std::vector<StlTemplates::STLtriangle> temp_triangles;
         int iter{ 0 };
-
-        // add a non-colored box inside the part to make it sturdier
-        constexpr static Values4 white{ 255, 255, 255, 255 };
         //std::cout << skin_to_apply.colors[color_id];
         if ( !is_outer && skin_to_apply.colors[color_id] == white) {
             auto inner_cube_pos{ pos };

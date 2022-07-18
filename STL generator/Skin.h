@@ -6,22 +6,18 @@
 #include "XValues.h"
 #include "SkinStructure.h"
 
-namespace constants
-{
-    static const int num_of_pixels{ 64 };
-}
+
 struct Skin
 {
     std::vector<std::vector<Values4>> RGBA_2d_array;
     std::map<std::string, std::map<std::string, Values4>> skin_structure;
 
-    // checking num of colors again to be 100% certain
+    // checking num of colors post import to be 100% certain
+    // remove once the software becomes tested to the point where we can be certain it can handle any skin
     std::vector<Values4> colors;
 
-    Skin(std::vector<std::string>& raw_skin_data, std::ifstream& skin_documentation_file)
+    Skin(std::vector<std::string>& raw_skin_data, std::map<std::string, std::map<std::string, Values4>>& _skin_structure) : skin_structure(_skin_structure)
     {
-        skin_structure = get_skin_structure(skin_documentation_file);
-
         RGBA_2d_array.resize(constants::num_of_pixels);
         for (int i{ 0 }; i < constants::num_of_pixels; i++)
             RGBA_2d_array[i].resize(constants::num_of_pixels);
@@ -49,7 +45,6 @@ struct Skin
                         new_color = false;
                         break;
                     }
-                //std::cout << RGBA_2d_array[x][y][0] << ' ' << RGBA_2d_array[x][y][1] << ' ' << RGBA_2d_array[x][y][2] << ' ' << '\n';
                 if (new_color)
                     colors.push_back(RGBA_2d_array[x][y]);
             }
