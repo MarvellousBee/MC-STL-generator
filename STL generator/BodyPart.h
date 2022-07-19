@@ -33,7 +33,6 @@ public:
     // add a non-colored box inside the part to make it sturdier
     constexpr static Values4 white{ 255, 255, 255, 255 };
     
-
     auto get_triangles()
     {
         return triangles;
@@ -42,10 +41,48 @@ public:
     BodyPart(std::string part_name
         , const Point3f _pos
         , const Skin& skin_to_apply
+        , const bool& is_infill = false)
+        : pos(_pos)
+        , skin(skin_to_apply)
+    {
+        std::vector<StlTemplates::STLtriangle> temp_triangles;
+        std::map<std::string, std::vector<std::pair<int, int>>> coordinates{
+            { "Front" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Front")) }
+        ,   { "Back"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Back")) }
+        ,   { "Left"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Left")) }
+        ,   { "Right" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Right")) }
+        ,   { "Bottom", all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Bottom")) }
+        ,   { "Top"   , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
+        };
+
+        Point3f size{
+            coordinates["Left"].back().second - coordinates["Left"][0].second + 1,
+            coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
+            coordinates["Front"].back().first - coordinates["Front"][0].first + 1
+        };
+
+        auto inner_cube_pos{ pos };
+        inner_cube_pos.x += 1;
+        inner_cube_pos.y -= size.y - 2;
+        inner_cube_pos.z -= size.z - 2;
+        auto inner_cube_size{ size };
+        inner_cube_size.x -= 2;
+        inner_cube_size.y -= 2;
+        inner_cube_size.z -= 2;
+        auto obj{ make_rectangle(inner_cube_pos, inner_cube_size) };
+        temp_triangles.insert(triangles.end(), obj.begin(), obj.end());
+
+        for (int i{ 0 }; i < temp_triangles.size(); i++)
+            triangles.push_back(temp_triangles[i]);
+    }
+
+    BodyPart(std::string part_name
+        , const Point3f _pos
+        , const Skin& skin_to_apply
         , const int& color_id
         , std::map<std::string
         , std::vector<Point3f>>& taken_coordinates
-        ,  const bool& is_outer = false)
+        , const bool& is_outer = false)
         : pos(_pos)
         , skin(skin_to_apply)
     {
@@ -64,28 +101,17 @@ public:
             coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
             coordinates["Front"].back().first - coordinates["Front"][0].first + 1
         };
+        std::vector<StlTemplates::STLtriangle> temp_triangles;
 
+        //std::cout << skin_to_apply.colors[color_id];
         auto starting_pos{ pos };
         auto cube_pos{ pos };
 
         auto tex_coords{ coordinates["Front"] };
         auto offset_a = tex_coords[0].first;
         auto offset_b = tex_coords[0].second;
-        std::vector<StlTemplates::STLtriangle> temp_triangles;
         int iter{ 0 };
-        //std::cout << skin_to_apply.colors[color_id];
-        if ( !is_outer && skin_to_apply.colors[color_id] == white) {
-            auto inner_cube_pos{ pos };
-            inner_cube_pos.x += 1;
-            inner_cube_pos.y -= size.y - 2;
-            inner_cube_pos.z -= size.z - 2;
-            auto inner_cube_size{ size };
-            inner_cube_size.x -= 2;
-            inner_cube_size.y -= 2;
-            inner_cube_size.z -= 2;
-            auto obj{ make_rectangle(inner_cube_pos, inner_cube_size) };
-            temp_triangles.insert(triangles.end(), obj.begin(), obj.end());
-        }
+        
             
         for (auto& pair : tex_coords)
         {

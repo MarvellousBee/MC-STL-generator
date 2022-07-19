@@ -28,11 +28,23 @@ std::string test_all(T function)
     return out;
 }
 
+void make_file(std::vector<StlTemplates::STLtriangle>& color, std::string file_name)
+{
+    std::ofstream outf{ "STL_output/" + file_name + ".stl" };
+    if (!outf) {
+        std::cerr << "Could not make " + file_name + ".stl!\n";
+        throw 1;
+    }
+    outf << "solid ASCII\n";
+    for (auto& i : color)
+        outf << make_facet(i);
+}
+
 void make_file_with_id(std::vector<StlTemplates::STLtriangle>& color, int& file_id)
 {
     std::ofstream outf{ "STL_output/EX" + std::to_string(file_id) + ".stl" };
     if (!outf) {
-        std::cerr << "Could not open EX" + std::to_string(file_id) + ".stl for WRITING!\n";
+        std::cerr << "Could not make " + std::to_string(file_id) + ".stl!\n";
         throw 1;
     }
     outf << "solid ASCII\n";
@@ -41,11 +53,11 @@ void make_file_with_id(std::vector<StlTemplates::STLtriangle>& color, int& file_
 }
 void delete_all_files_in_STL_output()
 {
-    int file_id{ 0 };
-    //delete all previous files
-    for (int i{ 0 }; i < 10; i++)
+    for (int i{ 0 }; i < 64 * 64; i++)
     {
         std::string file{ "STL_output/EX" + std::to_string(i) + ".stl" };
         std::filesystem::remove(file);
     }
+    std::string file{ "STL_output/INFILL.stl" };
+    std::filesystem::remove(file);
 }

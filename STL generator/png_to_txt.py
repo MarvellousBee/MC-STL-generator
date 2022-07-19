@@ -5,6 +5,8 @@ import numpy as np
 from PIL import Image
 from sty import bg
 
+merge_colors = False
+look_for_white_like_color = False
 num_of_colors = 7
 num_of_rounds = 500
 
@@ -42,75 +44,80 @@ def kmeans_color_quantization(image, clusters=7, rounds=1):
     centers = np.array(centers)
     res = centers[labels.flatten()]
     return res.reshape((image.shape))
-
-image = cv2.imread('skin.png', flags = cv2.IMREAD_UNCHANGED)
-
-result = kmeans_color_quantization(image, clusters=num_of_colors, rounds = num_of_rounds)
-
-unique_colors = get_unique_colors(result)
-
-to_white_thresh = 200
-white_candidates = []
-for i in unique_colors:
-    if ( sum(i[:3]) / len(i[:3]) > to_white_thresh):
-        white_candidates.append(i)
-
-max_color = -1
-white = np.array([255,255,255,255])
-top_candidate = white
-
-for i in white_candidates:
-    if max_color < sum(i):
-        top_candidate = i
-        max_color = sum(i)
-
-if max_color != -1:
-    print("Detected white-like color!")
-    for x in range(64):
-        for y in range(64):
-            if tuple(result[x,y]) == top_candidate:
-                result[x,y] = white
-else:
-    print("white-like color NOT DETECTED! Regenerating...")
-    result = kmeans_color_quantization(image, clusters=num_of_colors-1, rounds = num_of_rounds)
-
-cv2.imwrite("output.png", result)
-
-print("Image generated!\nYou may edit it now.\nPress Enter to generate a text file...")
-input()
-image2 = cv2.imread('output.png', flags = cv2.IMREAD_UNCHANGED)
-
-unique_colors = get_unique_colors(image2)
-assert len(unique_colors) <= num_of_colors or (len(unique_colors) <= num_of_colors-1 and max_color == -1)
-
-
-#for some reason, they R and B values get swapped along the way, but the image renders fine!
-#fix colors for display
-marker_colors = []
-
-
-for pixel in unique_colors:
-    if tuple(white[:3]) == pixel[:3]:
-        marker_colors.append(white)
-
-for pixel in unique_colors:
-    if tuple(white[:3]) == pixel[:3]:
-        continue
-    #for some reason, R and B values get swapped along the way. I'm fixing that here.
+def blue_swap(pixel):
     temp = []
     prev_color = pixel[0]
     temp.append(pixel[2])
     temp.append(pixel[1])
     temp.append(prev_color)
     temp.append(pixel[3])
-    marker_colors.append(temp)
+    return temp
+
+image = cv2.imread('skin.png', flags = cv2.IMREAD_UNCHANGED)
+
+marker_colors = []
+if merge_colors:
+    result = kmeans_color_quantization(image, clusters=num_of_colors, rounds = num_of_rounds)
+
+    unique_colors = get_unique_colors(result)
+
+    to_white_thresh = 200
+    white_candidates = []
+    for i in unique_colors:
+        if ( sum(i[:3]) / len(i[:3]) > to_white_thresh):
+            white_candidates.append(i)
+
+    if (look_for_white_like_color):
+        max_color = -1
+        white = np.array([255,255,255,255])
+        top_candidate = white
+
+        for i in white_candidates:
+            if max_color < sum(i):
+                top_candidate = i
+                max_color = sum(i)
+
+        if max_color != -1:
+            print("Detected white-like color!")
+            for x in range(64):
+                for y in range(64):
+                    if tuple(result[x,y]) == top_candidate:
+                        result[x,y] = white
+        else:
+            print("white-like color NOT DETECTED! Regenerating...")
+            result = kmeans_color_quantization(image, clusters=num_of_colors-1, rounds = num_of_rounds)
+
+    cv2.imwrite("output.png", result)
+
+    print("Image generated!\nYou may edit it now.\nPress Enter to generate a text file...")
+    input()
+    image2 = cv2.imread('output.png', flags = cv2.IMREAD_UNCHANGED)
+
+    unique_colors = get_unique_colors(image2)
+    assert len(unique_colors) <= num_of_colors or (len(unique_colors) <= num_of_colors-1 and max_color == -1)
+    #for some reason, they R and B values get swapped along the way, but the image renders fine!
+    #fix colors for display
+
+
+    for pixel in unique_colors:
+        if tuple(white[:3]) == pixel[:3]:
+            marker_colors.append(white)
+
+    for pixel in unique_colors:
+        if tuple(white[:3]) != pixel[:3]:
+            marker_colors.append(blue_swap(pixel))
+
+else:
+    cv2.imwrite("output.png", image)
+    unique_colors = get_unique_colors(image)
+    for pixel in unique_colors:
+        marker_colors.append(blue_swap(pixel))
 
 
 
 #display colors
 i = 1
 for color in marker_colors:
-    #if color != [255, 255, 255, 255]:
     print(i, ' ', end = '')
     print_color(color)
     print("  " + str(color[0]) + '  \t' + str(color[1]) + '  \t' + str(color[2]))

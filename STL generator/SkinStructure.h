@@ -117,3 +117,13 @@ void add_inner_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, 
     add_vectors(color, BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
     add_vectors(color, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
 }
+
+void add_infill(std::vector<StlTemplates::STLtriangle>& color, Skin& skin )
+{
+    add_vectors(color, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, true}.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
+    add_vectors(color, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(color, BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f}, skin, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+}
