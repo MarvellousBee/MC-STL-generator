@@ -40,7 +40,7 @@ namespace StlTemplates
                 y_values.insert(c.y);
                 z_values.insert(c.z);
             }
-        std::vector sizes{ x_values.size(), y_values.size(), z_values.size() };
+        std::vector<size_t> sizes{ x_values.size(), y_values.size(), z_values.size() };
         std::sort(sizes.begin(), sizes.end());
 
         return sizes[0] == 1 && sizes[1] == 1 && sizes[2] == 2;
