@@ -50,9 +50,12 @@ int main()
     //        make_file_with_id(triangles[i], ++file_id);
 
     for (int i{ 0 }; i < skin.colors.size(); i++)
-        if (skin.colors[i][3] != 0) // other colors
-            make_file_with_id(triangles[i], ++file_id);
-
+        if (skin.colors[i][3] != 0)
+        {
+            bool success = make_file_with_id(triangles[i], file_id);
+            if (success)
+                ++file_id;
+        }
     make_file(infill, "INFILL");
 
     return EXIT_SUCCESS;
