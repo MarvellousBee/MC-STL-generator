@@ -2186,5 +2186,3 @@ namespace StlTemplates
         }
     };
 }
-
-
