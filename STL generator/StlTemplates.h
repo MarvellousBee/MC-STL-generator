@@ -7,7 +7,6 @@
 #include <algorithm>
 #include "XValues.h"
 
-
 namespace StlTemplates
 {
     struct STLtriangle

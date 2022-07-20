@@ -1,4 +1,7 @@
 
+# Helper script for parsing 3D objects genereted with an external 3d modelling program
+# Not executed anywhere.
+
 def print_vectr(vec) :
     print('    {', end = "")
     for i in range(3) :

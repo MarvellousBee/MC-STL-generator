@@ -15,9 +15,13 @@
 #include "BodyPart.h"
 #include "StlTemplates.h"
 #include "Utils.h"
+#include "PythonRunner.h"
 
 int main()
 {   
+    test();
+
+
     // Initialize the custom skin and its official documentation
     auto skin_documentation{ get_skin_structure("plane_coords.txt") };
     auto custom_skin_colors{ get_custom_skin_colors("text_output.txt") };
@@ -43,18 +47,19 @@ int main()
 
     //create output STL files
     delete_all_files_in_STL_output();
-    int file_id{ 0 };
 
-    //for (int i{ 0 }; i < skin.colors.size(); i++)
-    //    if (skin.colors[i] == BodyPart::white) // white first, if exists
-    //        make_file_with_id(triangles[i], ++file_id);
+    int file_id{ 1 };
 
     for (int i{ 0 }; i < skin.colors.size(); i++)
         if (skin.colors[i][3] != 0)
         {
+            // On some skins, a color appears only under an outer layer.
+            // This color is recognized, but not represented. make_file_with_id() returns false when it detects such a color.
             bool success = make_file_with_id(triangles[i], file_id);
             if (success)
                 ++file_id;
+            //else
+                //std::cout << "skipping " << file_id << '\n';
         }
     make_file(infill, "INFILL");
 

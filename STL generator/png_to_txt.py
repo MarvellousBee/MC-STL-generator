@@ -5,9 +5,9 @@ from PIL import Image
 from sty import bg
 from sklearn.cluster import KMeans
 from deprecated import deprecated
-merge_colors = True
+merge_colors = False
 look_for_white_like_color = False
-num_of_colors = 19
+num_of_colors = 20
 #num_of_rounds = 1#500
 
 def print_color(color):
@@ -81,13 +81,11 @@ image = cv2.imread('skin.png', flags = cv2.IMREAD_UNCHANGED)
 
 marker_colors = []
 if merge_colors:
-    print(num_of_colors, len(get_unique_colors(image)))
     assert num_of_colors < len(get_unique_colors(image))
 
     result = kmeans_improved(image, clusters=num_of_colors)
 
     unique_colors = get_unique_colors(result)
-    print(num_of_colors, len(unique_colors))
     if look_for_white_like_color:
 
         to_white_thresh = 200
