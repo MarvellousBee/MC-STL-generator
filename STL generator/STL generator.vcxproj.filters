@@ -32,6 +32,12 @@
     <None Include="stl_parser.py">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="python_functions.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\x64\Debug\shortcut.py">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="skin.png">

@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 
 template <class T>
 void add_vectors(std::vector<T>& lhs, std::vector<T>& rhs)
@@ -64,4 +65,11 @@ void delete_all_files_in_STL_output()
     }
     std::string file{ "STL_output/INFILL.stl" };
     std::filesystem::remove(file);
+}
+void copy_file(const std::string input, const std::string output)
+{
+    std::ifstream  src(input, std::ios::binary);
+    std::ofstream  dst(output, std::ios::binary);
+
+    dst << src.rdbuf();
 }

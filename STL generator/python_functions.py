@@ -1,19 +1,15 @@
-from ctypes import resize
 import cv2
 import numpy as np
 from PIL import Image
 from sty import bg
 from sklearn.cluster import KMeans
-from deprecated import deprecated
-merge_colors = True
-look_for_white_like_color = False
-num_of_colors = 20
-#num_of_rounds = 1#500
-white = np.array([255,255,255,255])
 
 def print_color(color):
     print(bg(color[0], color[1], color[2]) + "   " + bg.rs, end="")
 
+#Easier to parse in C++
+def print_color_distinct(v1,v2,v3):
+    print_color([v1,v2,v3])
 
 def get_unique_colors(img):
     uniqueColors = []
@@ -24,8 +20,8 @@ def get_unique_colors(img):
                 uniqueColors.append(color_tuple)
     return uniqueColors
 
-@deprecated(reason="Does not reduce colors to the correct amount. Use kmeans_improved().")
 def kmeans_color_quantization(image, clusters, rounds):
+    """Tends to output too little colors, deprecated. Use kmeans_improved()."""
     h, w = image.shape[:2]
     clusters+=1
     samples = np.zeros([h*w,4], dtype=np.float32)
@@ -67,6 +63,16 @@ def kmeans_improved(img, clusters):
     # reshape for display
     return recolored_img.reshape(w,h,4)
 
+def kmeans_improved_from_path(path, clusters, output = "output.png"):
+    result = kmeans_improved(read_image(path), clusters)
+    write_image(result, output)
+    
+def get_and_store_unique_colors(skin_to_parse = "output.png", img_path = 'uclrs.txt'):
+    with open(img_path, "w", encoding = 'utf-8') as file:
+            for i in get_unique_colors(read_image(skin_to_parse)):
+                file.write(str(i[2]) + ' ' + str(i[1]) + ' ' + str(i[0]) + '\n')
+
+"""
 def blue_swap(pixel):
     temp = []
     prev_color = pixel[0]
@@ -75,84 +81,47 @@ def blue_swap(pixel):
     temp.append(prev_color)
     temp.append(pixel[3])
     return temp
+"""
 
+def read_image(path = "skin.png"):
+    return cv2.imread(path, flags = cv2.IMREAD_UNCHANGED)
 
+def write_image(result, path = "output.png"):
+    cv2.imwrite(path, result)
 
-image = cv2.imread('skin.png', flags = cv2.IMREAD_UNCHANGED)
-
-marker_colors = []
-if merge_colors:
+def merge_colors(image):
     assert num_of_colors < len(get_unique_colors(image))
-
     result = kmeans_improved(image, clusters=num_of_colors)
+    return result;
 
-    unique_colors = get_unique_colors(result)
-    if look_for_white_like_color:
+    #print("Image generated!\nYou may edit it now.\nPress Enter to generate a text file...")
+    #input()
 
-        to_white_thresh = 200
-        white_candidates = []
-        for i in unique_colors:
-            if ( sum(i[:3]) / len(i[:3]) > to_white_thresh):
-                white_candidates.append(i)
-
-        max_color = -1
-        top_candidate = white
-
-        for i in white_candidates:
-            if max_color < sum(i):
-                top_candidate = i
-                max_color = sum(i)
-
-        if max_color != -1:
-            print("Detected white-like color!")
-            for x in range(64):
-                for y in range(64):
-                    if tuple(result[x,y]) == top_candidate:
-                        result[x,y] = white
-        else:
-            print("white-like color NOT DETECTED! Regenerating...")
-            result = kmeans_color_quantization(image, clusters=num_of_colors-1, rounds = num_of_rounds)
-
-    cv2.imwrite("output.png", result)
-    
-
-    print("Image generated!\nYou may edit it now.\nPress Enter to generate a text file...")
-    input()
-    image2 = cv2.imread('output.png', flags = cv2.IMREAD_UNCHANGED)
-
+def generate_marker_colors(path = 'output.png'):
+    image2 = cv2.imread(path, flags = cv2.IMREAD_UNCHANGED)
+    marker_colors = []
     unique_colors = get_unique_colors(image2)
     print(len(unique_colors), num_of_colors)
     assert len(unique_colors) == num_of_colors
     #for some reason, they R and B values get swapped along the way, but the image renders fine!
     #fix colors for display
-
-    for pixel in unique_colors:
-        if tuple(white[:3]) == pixel[:3]:
-            marker_colors.append(white)
-
-    for pixel in unique_colors:
-        if tuple(white[:3]) != pixel[:3]:
-            marker_colors.append(blue_swap(pixel))
-
-else:
-    cv2.imwrite("output.png", image)
-    unique_colors = get_unique_colors(image)
     for pixel in unique_colors:
         marker_colors.append(blue_swap(pixel))
+    return marker_colors
 
 
 
-#display colors
-i = 1
-for color in marker_colors:
-    print(i, ' ', end = '')
-    print_color(color)
-    print("  " + str(color[0]) + '  \t' + str(color[1]) + '  \t' + str(color[2]))
-    i+=1
+def print_all_colors(marker_colors):
+    i = 1
+    for color in marker_colors:
+        print(i, ' ', end = '')
+        print_color(color)
+        print("  " + str(color[0]) + '  \t' + str(color[1]) + '  \t' + str(color[2]))
+        i+=1
 
-im = Image.open("output.png") 
-pixel_values = list(im.getdata())
-width, height = im.size
-pixel_values = np.array(pixel_values)
-np.savetxt("text_output.txt", pixel_values)
-print("\n\nDone!")
+def convert_skin_to_txt(path = 'output.png'):
+    im = Image.open(path) 
+    pixel_values = list(im.getdata())
+    width, height = im.size
+    pixel_values = np.array(pixel_values)
+    np.savetxt("text_output.txt", pixel_values)
