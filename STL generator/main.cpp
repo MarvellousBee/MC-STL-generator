@@ -19,24 +19,21 @@
 
 int main()
 {   
-    bool merge_colors{ true };
-    bool pause_to_edit{ false };
-    bool show_rgb_brackets{ true };
-
     // If an outer part of the skin covers EVERY pixel of a given color,
     // then we ignore that color.
     int max_colors{ 15 };
+    bool merge_colors{ true };
+    bool pause_to_edit{ false };
+    bool show_rgb_brackets{ true };
 
     Py_Initialize();
     Python::add_script_path();
     Python::edit_skin(merge_colors
                     , pause_to_edit
                     , show_rgb_brackets
-                    , max_colors
-    );
+                    , max_colors);
     Python::convert_skin_to_txt();
 
-    // Initialize the custom skin and its official documentation
     auto skin_documentation{ get_skin_structure("plane_coords.txt") };
     auto custom_skin_colors{ get_custom_skin_colors("text_output.txt") };
     auto taken_pixels{ init_taken_pixels_storage() };
