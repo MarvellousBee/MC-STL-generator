@@ -29,16 +29,11 @@ int main()
 
     Py_Initialize();
     Python::add_script_path();
-    if (merge_colors)
-        Python::reduce_colors(max_colors);
-    else
-        copy_file("skin.png", "output.png");
-    if (pause_to_edit)
-    {
-        int a{ 0 };
-        std::cin >> a;
-    }
-    //Python::get_and_store_unique_colors();
+    Python::edit_skin(merge_colors
+                    , pause_to_edit
+                    , show_rgb_brackets
+                    , max_colors
+    );
     Python::convert_skin_to_txt();
 
     // Initialize the custom skin and its official documentation
@@ -47,43 +42,14 @@ int main()
     auto taken_pixels{ init_taken_pixels_storage() };
     Skin skin{ custom_skin_colors, skin_documentation };
     auto triangles{ init_facets_storage(skin)};
-    
-    //Construct the skin
+    construct_skin(skin, triangles, taken_pixels);
+    auto infill{ get_infill(skin) };
 
-    // Layer 2
-    // is dealt with first, so it covers up whatever it needs to cover first.
-    for (int i{ 0 }; i < skin.colors.size(); i++)
-        if (skin.colors[i][3] != 0)
-            add_outer_layer(triangles[i], skin, i, taken_pixels);
-    
-    // Layer 1
-    for (int i{ 0 }; i < skin.colors.size(); i++)
-        if (skin.colors[i][3] != 0)
-            add_inner_layer(triangles[i], skin, i, taken_pixels);
-
-    std::vector<StlTemplates::STLtriangle> infill;
-    add_infill(infill, skin);
-
-    //create output STL files
     delete_all_files_in_STL_output();
-
-    int file_id{ 1 };
-
-    for (int i{ 0 }; i < skin.colors.size(); i++)
-        if (skin.colors[i][3] != 0)
-        {
-            // On some skins, a color appears only under an outer layer.
-            // This color is recognized, but not represented. make_file_with_id() returns false when it detects such a color.
-            bool success = make_file_with_id(triangles[i], file_id);
-            if (success) {
-                std::cout << file_id;
-                Python::print_color(skin.colors[i][0], skin.colors[i][1], skin.colors[i][2], show_rgb_brackets);
-                ++file_id;
-            }
-        }
+    make_color_files_and_print_colors(skin, triangles, show_rgb_brackets);
     make_file(infill, "INFILL");
 
-    
     Py_Finalize();
+
     return EXIT_SUCCESS;
 }

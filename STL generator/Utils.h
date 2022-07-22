@@ -73,3 +73,26 @@ void copy_file(const std::string input, const std::string output)
 
     dst << src.rdbuf();
 }
+
+namespace Python
+{
+    void print_color(const int a, const int b, const int c, const bool& show_rgb_brackets);
+}
+
+void make_color_files_and_print_colors(Skin& skin, std::vector<std::vector<StlTemplates::STLtriangle>>& triangles, const bool& show_rgb_brackets)
+{
+    int file_id{ 1 };
+
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+        if (skin.colors[i][3] != 0)
+        {
+            // On some skins, a color appears only under an outer layer.
+            // This color is recognized, but not represented. make_file_with_id() returns false when it detects such a color.
+            bool success = make_file_with_id(triangles[i], file_id);
+            if (success) {
+                std::cout << file_id;
+                Python::print_color(skin.colors[i][0], skin.colors[i][1], skin.colors[i][2], show_rgb_brackets);
+                ++file_id;
+            }
+        }
+}
