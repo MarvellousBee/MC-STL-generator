@@ -364,7 +364,8 @@ FodyWeavers.xsd
 
 # STL files
 *.stl
-# PNG files
-*.png
+# skin files
+skin.png
+output.png
 # txt version of the edited skin
 text_output.txt
