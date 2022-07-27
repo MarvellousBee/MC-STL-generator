@@ -22,7 +22,7 @@ int main()
     // If an outer part of the skin covers EVERY pixel of a given color,
     // then we ignore that color.
     int max_colors{ 15 };
-    bool merge_colors{ true };
+    bool merge_colors{ false };
     bool pause_to_edit{ false };
     bool show_rgb_brackets{ true };
 
