@@ -21,10 +21,10 @@ int main()
 {   
     // If an outer part of the skin covers EVERY pixel of a given color,
     // then we ignore that color.
-    int max_colors{ 15 };
-    bool merge_colors{ false };
-    bool pause_to_edit{ false };
-    bool show_rgb_brackets{ true };
+    const int max_colors{ 15 };
+    const bool merge_colors{ false };
+    const bool pause_to_edit{ false };
+    const bool show_rgb_brackets{ true };
 
     Py_Initialize();
     Python::add_script_path();
