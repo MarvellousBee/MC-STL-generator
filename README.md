@@ -26,14 +26,14 @@ const bool merge_colors{ false };
 const bool pause_to_edit{ false };
 const bool show_rgb_brackets{ true };
 ```
-  1. set `merge_colors` to `true`
+  1. Set `merge_colors` to `true`,
   2. set `max_colors` to the maximum amount of colors your printer supports
   
 ### Step 2
   
-  1. Load this Visual Studio 2022 project & compile it.
-  2. replace `STL generator/skin.png` with your own minecraft skin
-  3. Run the program!
+  1. Load this Visual Studio 2022 project & compile it,
+  2. replace `STL generator/skin.png` with your own minecraft skin,
+  3. run the program!
   
   In the `STL_output` folder you should see the list of all `.stl` files that you need to 3D print.
   
