@@ -47,7 +47,7 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   
   Meanwhile, the console should display all of the colors that correspond to your files
   
-  ![](media/console.png)
+  ![](media/console_preview.png)
   
   Each color should be applied to the stl file that has the same number.
   
