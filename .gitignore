@@ -369,3 +369,5 @@ skin.png
 output.png
 # txt version of the edited skin
 text_output.txt
+# Settings
+Settings.h
