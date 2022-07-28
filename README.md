@@ -9,6 +9,15 @@ Here's the example skin's head, 3D printed on my makeshift abomination of a 3D p
 
 ![](media/printed.jpg)
 
+## Dependencies
+You will need [Python](https://www.python.org/downloads/) and the following [pip](https://pypi.org/project/pip/) libraries:
+* opencv-python
+* NumPy
+* PIL
+* sty
+* scikit-learn
+
+
 ## Usage
 
 Typically, your multicolor 3D printer should support more colors than your skin has.
@@ -31,9 +40,13 @@ const bool show_rgb_brackets{ true };
   
 ### Step 2
   
-  1. Load this Visual Studio 2022 project & compile it,
-  2. replace `STL generator/skin.png` with your own minecraft skin,
-  3. run the program!
+  1. Load this Visual Studio 2022 project
+  2. Because this project depends on Python, you will also need to "add" it to your Visual Studio project.
+  See these resources ("quick" setup is enough for this use case):
+  * [quick setup tutorial](https://medium.datadriveninvestor.com/how-to-quickly-embed-python-in-your-c-application-23c19694813)
+  * [detailed setup tutorial](https://devblogs.microsoft.com/python/embedding-python-in-a-cpp-project-with-visual-studio/)
+  3. replace `STL generator/skin.png` with your own minecraft skin,
+  4. Build and run the project!
   
   In the `STL_output` folder you should see the list of all `.stl` files that you need to 3D print.
   
