@@ -27,16 +27,9 @@ If you are certain that's correct, you can skip Step 1.
 ### Step 1
 
 If your printer supports **LESS** colors than your skin has - you can merge them!
- look for the following lines in `main.cpp`:
- 
-```C++
-const int max_colors{ 15 };
-const bool merge_colors{ false };
-const bool pause_to_edit{ false };
-const bool show_rgb_brackets{ true };
-```
-  1. Set `merge_colors` to `true`,
-  2. set `max_colors` to the maximum amount of colors your printer supports
+  1. open `Settings.h`
+  2. Set `merge_colors` to `true`,
+  3. set `max_colors` to the maximum amount of colors your printer supports
   
 ### Step 2
   
