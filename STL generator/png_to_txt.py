@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 from sty import bg
 from sklearn.cluster import KMeans
-from deprecated import deprecated
+
 merge_colors = True
 look_for_white_like_color = False
 num_of_colors = 20
@@ -24,7 +24,7 @@ def get_unique_colors(img):
                 uniqueColors.append(color_tuple)
     return uniqueColors
 
-@deprecated(reason="Does not reduce colors to the correct amount. Use kmeans_improved().")
+#Does not reduce colors to the correct amount. Use kmeans_improved().
 def kmeans_color_quantization(image, clusters, rounds):
     h, w = image.shape[:2]
     clusters+=1
