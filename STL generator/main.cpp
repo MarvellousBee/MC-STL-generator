@@ -17,21 +17,16 @@
 #include "Utils.h"
 #include "PythonRunner.h"
 
+#include "Settings.h"
+
 int main()
 {   
-    // If an outer part of the skin covers EVERY pixel of a given color,
-    // then we ignore that color.
-    const int max_colors{ 15 };
-    const bool merge_colors{ false };
-    const bool pause_to_edit{ false };
-    const bool show_rgb_brackets{ true };
-
     Py_Initialize();
     Python::add_script_path();
-    Python::edit_skin(merge_colors
-                    , pause_to_edit
-                    , show_rgb_brackets
-                    , max_colors);
+    Python::edit_skin(Settings::merge_colors
+                    , Settings::pause_to_edit
+                    , Settings::show_rgb_brackets
+                    , Settings::max_colors);
     Python::convert_skin_to_txt();
 
     auto skin_documentation{ get_skin_structure("plane_coords.txt") };
@@ -43,7 +38,7 @@ int main()
     auto infill{ get_infill(skin) };
 
     delete_all_files_in_STL_output();
-    make_color_files_and_print_colors(skin, triangles, show_rgb_brackets);
+    make_color_files_and_print_colors(skin, triangles, Settings::show_rgb_brackets);
     make_file(infill, "INFILL");
 
     Py_Finalize();
