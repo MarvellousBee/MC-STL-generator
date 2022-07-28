@@ -27,7 +27,7 @@ If you are certain that's correct, you can skip Step 1.
 ### Step 1
 
 If your printer supports **LESS** colors than your skin has - you can merge them!
-  1. open 'Settings.h'
+  1. open `Settings.h`
   2. Set `merge_colors` to `true`,
   3. set `max_colors` to the maximum amount of colors your printer supports
   
