@@ -66,22 +66,6 @@ def kmeans_improved(img, clusters):
 def kmeans_improved_from_path(path, clusters, output = "output.png"):
     result = kmeans_improved(read_image(path), clusters)
     write_image(result, output)
-    
-def get_and_store_unique_colors(skin_to_parse = "output.png", img_path = 'uclrs.txt'):
-    with open(img_path, "w", encoding = 'utf-8') as file:
-            for i in get_unique_colors(read_image(skin_to_parse)):
-                file.write(str(i[2]) + ' ' + str(i[1]) + ' ' + str(i[0]) + '\n')
-
-"""
-def blue_swap(pixel):
-    temp = []
-    prev_color = pixel[0]
-    temp.append(pixel[2])
-    temp.append(pixel[1])
-    temp.append(prev_color)
-    temp.append(pixel[3])
-    return temp
-"""
 
 def read_image(path = "skin.png"):
     return cv2.imread(path, flags = cv2.IMREAD_UNCHANGED)
@@ -93,9 +77,6 @@ def merge_colors(image):
     assert num_of_colors < len(get_unique_colors(image))
     result = kmeans_improved(image, clusters=num_of_colors)
     return result;
-
-    #print("Image generated!\nYou may edit it now.\nPress Enter to generate a text file...")
-    #input()
 
 def generate_marker_colors(path = 'output.png'):
     image2 = cv2.imread(path, flags = cv2.IMREAD_UNCHANGED)

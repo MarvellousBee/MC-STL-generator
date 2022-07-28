@@ -364,11 +364,13 @@ FodyWeavers.xsd
 
 # STL files
 *.stl
+
 # skin files
 skin.png
 output.png
+
 # text files
 text_output.txt
-uclrs.txt
+
 # Settings
 Settings.h
