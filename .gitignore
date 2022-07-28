@@ -367,7 +367,8 @@ FodyWeavers.xsd
 # skin files
 skin.png
 output.png
-# txt version of the edited skin
+# text files
 text_output.txt
+uclrs.txt
 # Settings
 Settings.h
