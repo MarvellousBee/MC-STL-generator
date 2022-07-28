@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <cmath>
 
 template <class T>
 void add_vectors(std::vector<T>& lhs, std::vector<T>& rhs)
@@ -90,7 +91,7 @@ void make_color_files_and_print_colors(Skin& skin, std::vector<std::vector<StlTe
             // This color is recognized, but not represented. make_file_with_id() returns false when it detects such a color.
             bool success = make_file_with_id(triangles[i], file_id);
             if (success) {
-                std::cout << file_id;
+                std::cout << file_id << std::string(2 - trunc(log10(file_id)), ' ');
                 Python::print_color(skin.colors[i][0], skin.colors[i][1], skin.colors[i][2], show_rgb_brackets);
                 ++file_id;
             }

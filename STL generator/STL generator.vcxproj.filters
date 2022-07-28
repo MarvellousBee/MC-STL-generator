@@ -26,9 +26,6 @@
     <None Include="Input.stl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="png_to_txt.py">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="stl_parser.py">
       <Filter>Source Files</Filter>
     </None>

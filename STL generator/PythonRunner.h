@@ -34,12 +34,7 @@ namespace Python
     void print_color(const int a, const int b, const int c, const bool& show_rgb_brackets)
     {
         PyObject* fun{ get_fun("print_color_distinct") };
-        PyObject_CallFunction(fun, "iii", a,b,c);
-        if (show_rgb_brackets)
-            std::cout << '\t' << "rgb(" << a << ", " << b << ", " << c << ")\n";
-        else
-            std::cout << '\t' << a << '\t' << b << '\t' << c << '\n';
-            
+        PyObject_CallFunction(fun, "iiib", a,b,c, show_rgb_brackets);
         PyErr_Print();
     }
     void edit_skin(const bool& merge_colors, const bool& pause_to_edit, const bool& show_rgb_brackets, const int& max_colors)

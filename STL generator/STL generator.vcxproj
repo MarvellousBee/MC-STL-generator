@@ -151,7 +151,6 @@
   <ItemGroup>
     <None Include="..\x64\Debug\shortcut.py" />
     <None Include="Input.stl" />
-    <None Include="png_to_txt.py" />
     <None Include="python_functions.py" />
     <None Include="stl_parser.py" />
   </ItemGroup>

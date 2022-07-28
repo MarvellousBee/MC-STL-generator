@@ -4,12 +4,17 @@ from PIL import Image
 from sty import bg
 from sklearn.cluster import KMeans
 
-def print_color(color):
+def print_color(color, show_rgb_brackets):
     print(bg(color[0], color[1], color[2]) + "   " + bg.rs, end="")
 
+    if show_rgb_brackets:
+        print(f" rgb({color[0]}, {color[1]}, {color[2]})")
+    else:
+        print(f" {color[0]}\t{color[1]}\t{color[2]}")
+
 #Easier to parse in C++
-def print_color_distinct(v1,v2,v3):
-    print_color([v1,v2,v3])
+def print_color_distinct(v1,v2,v3, show_rgb_brackets):
+    print_color([v1,v2,v3], show_rgb_brackets)
 
 def get_unique_colors(img):
     uniqueColors = []
@@ -89,16 +94,6 @@ def generate_marker_colors(path = 'output.png'):
     for pixel in unique_colors:
         marker_colors.append(blue_swap(pixel))
     return marker_colors
-
-
-
-def print_all_colors(marker_colors):
-    i = 1
-    for color in marker_colors:
-        print(i, ' ', end = '')
-        print_color(color)
-        print("  " + str(color[0]) + '  \t' + str(color[1]) + '  \t' + str(color[2]))
-        i+=1
 
 def convert_skin_to_txt(path = 'output.png'):
     im = Image.open(path) 
