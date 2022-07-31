@@ -75,6 +75,9 @@
     <ClInclude Include="Settings.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="3mf.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="plane_coords.txt">

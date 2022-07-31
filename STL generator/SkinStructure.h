@@ -89,16 +89,16 @@ std::map<std::string, std::vector<Point3f>> init_taken_pixels_storage()
     return taken_pixels;
 }
 
-std::vector<std::vector<StlTemplates::STLtriangle>> init_facets_storage(Skin& skin)
+std::vector<std::vector<StlTemplates::Facet>> init_facets_storage(Skin& skin)
 {
-    std::vector<std::vector<StlTemplates::STLtriangle>> triangles;
+    std::vector<std::vector<StlTemplates::Facet>> triangles;
     triangles.resize(skin.colors.size());
     for (auto& vec : triangles)
         vec.reserve(64 * 64);
     return triangles;
 }
 
-void add_outer_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+void add_outer_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
 {
     add_vectors(color, BodyPart{ "Helm", {-2.f,0.f,34.f}, skin, iter, taken_pixels, true }.get_triangles());
     add_vectors(color, BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
@@ -108,7 +108,7 @@ void add_outer_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, 
     add_vectors(color, BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
 }
 
-void add_inner_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+void add_inner_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
 {
     add_vectors(color, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
     add_vectors(color, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
@@ -118,9 +118,9 @@ void add_inner_layer(std::vector<StlTemplates::STLtriangle>& color, Skin& skin, 
     add_vectors(color, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
 }
 
-std::vector<StlTemplates::STLtriangle> get_infill(Skin& skin )
+std::vector<StlTemplates::Facet> get_infill(Skin& skin )
 {
-    std::vector<StlTemplates::STLtriangle> output;
+    std::vector<StlTemplates::Facet> output;
     add_vectors(output, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, true}.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
     add_vectors(output, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
     add_vectors(output, BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
@@ -130,7 +130,7 @@ std::vector<StlTemplates::STLtriangle> get_infill(Skin& skin )
     return output;
 }
 void construct_skin(Skin& skin,
-    std::vector<std::vector<StlTemplates::STLtriangle>>& triangles,
+    std::vector<std::vector<StlTemplates::Facet>>& triangles,
     std::map<std::string, std::vector<Point3f>>& taken_pixels
 )
 {

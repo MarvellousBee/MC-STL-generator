@@ -364,6 +364,8 @@ FodyWeavers.xsd
 
 # STL files
 *.stl
+# 3mf output file
+output.stl
 
 # skin files
 skin.png

@@ -26,7 +26,7 @@ bool is_pos_taken(const std::vector<Point3f>& taken_coordinates, const Point3f& 
 
 class BodyPart
 {
-    std::vector<StlTemplates::STLtriangle> triangles;
+    std::vector<StlTemplates::Facet> triangles;
 public:
     const Point3f pos;
     const Skin& skin;
@@ -45,7 +45,7 @@ public:
         : pos(_pos)
         , skin(skin_to_apply)
     {
-        std::vector<StlTemplates::STLtriangle> temp_triangles;
+        std::vector<StlTemplates::Facet> temp_triangles;
         std::map<std::string, std::vector<std::pair<int, int>>> coordinates{
             { "Front" , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Front")) }
         ,   { "Back"  , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Back")) }
@@ -101,7 +101,7 @@ public:
             coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
             coordinates["Front"].back().first - coordinates["Front"][0].first + 1
         };
-        std::vector<StlTemplates::STLtriangle> temp_triangles;
+        std::vector<StlTemplates::Facet> temp_triangles;
 
         //std::cout << skin_to_apply.colors[color_id];
         auto starting_pos{ pos };

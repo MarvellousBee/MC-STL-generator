@@ -9,25 +9,12 @@
 
 namespace StlTemplates
 {
-    struct STLtriangle
+    struct Facet
     {
         Point3f normal{};
         std::vector<Point3f> coordinates{};
-        bool same_poition(STLtriangle& rhs)
-        {
-            for (int a{ 0 }; a < 4; a++)
-                if (coordinates[0] == rhs.coordinates[a])
-                    for (int b{ 0 }; b < 4; b++)
-                        if (b != a && coordinates[1] == rhs.coordinates[b])
-                            for (int c{ 0 }; c < 4; c++)
-                                if (c != a && c != b && coordinates[2] == rhs.coordinates[c])
-                                    return true;
-
-            return false;
-        }
-        
     };
-    bool is_overlapping_rectangle(const std::list<STLtriangle>& args)
+    bool is_overlapping_rectangle(const std::list<Facet>& args)
     {
         std::set<long double> x_values;
         std::set<long double> y_values;
@@ -45,7 +32,7 @@ namespace StlTemplates
         return sizes[0] == 1 && sizes[1] == 1 && sizes[2] == 2;
     }
 
-    std::map<std::string, std::vector<STLtriangle>> template_map
+    std::map<std::string, std::vector<Facet>> template_map
     {
         {
             "cube",

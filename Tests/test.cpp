@@ -27,10 +27,10 @@ TEST(TestXValues, Point3f) {
     EXPECT_FALSE(p1 == p2);
 }
 
-TEST(ObjectGeneration, make_facet) {
+TEST(ObjectGeneration, make_facet_string) {
     auto facet
     {
-        make_facet
+        make_facet_string
         (
             {
               {1.000000e+00, 1.028657e-15, 2.465190e-31 },

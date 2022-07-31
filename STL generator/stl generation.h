@@ -5,7 +5,7 @@
 #include "XValues.h"
 #include "StlTemplates.h"
 
-std::string make_facet(std::vector<Point3f> v, Point3f nrml)
+std::string make_facet_string(std::vector<Point3f> v, Point3f nrml)
 {
     assert(v.size() == 3);
     std::string output{ "  facet normal " };
@@ -27,15 +27,15 @@ std::string make_facet(std::vector<Point3f> v, Point3f nrml)
     return output;
 }
 
-std::string make_facet(StlTemplates::STLtriangle t)
+std::string make_facet_string(StlTemplates::Facet t)
 {
-    return make_facet(t.coordinates, t.normal);
+    return make_facet_string(t.coordinates, t.normal);
 }
 
-StlTemplates::STLtriangle make_facet_object(std::vector<Point3f> v, Point3f nrml)
+StlTemplates::Facet make_facet_object(std::vector<Point3f> v, Point3f nrml)
 {
     assert(v.size() == 3);
-    StlTemplates::STLtriangle output;
+    StlTemplates::Facet output;
 
     constexpr static float size_multiplier{ 3.25f };
 
@@ -53,11 +53,11 @@ StlTemplates::STLtriangle make_facet_object(std::vector<Point3f> v, Point3f nrml
 }
 
 // To be specific: makes a 3D rectangular prism
-std::vector<StlTemplates::STLtriangle> make_object(const Point3f& origin, const std::string& type)
+std::vector<StlTemplates::Facet> make_object(const Point3f& origin, const std::string& type)
 {
     //assert(StlTemplates::template_map.find(type) != StlTemplates::template_map.end());
 
-    std::vector<StlTemplates::STLtriangle> output;
+    std::vector<StlTemplates::Facet> output;
     auto templ { StlTemplates::template_map[type] };
 
     for (auto& fct : templ)
@@ -74,9 +74,9 @@ std::vector<StlTemplates::STLtriangle> make_object(const Point3f& origin, const 
     return output;
 }
 
-std::vector<StlTemplates::STLtriangle> make_rectangle(const Point3f& origin, const Point3f& size)
+std::vector<StlTemplates::Facet> make_rectangle(const Point3f& origin, const Point3f& size)
 {
-    std::vector<StlTemplates::STLtriangle> output;
+    std::vector<StlTemplates::Facet> output;
 
     for (int x{0}; x < size.x;x++)
         for (int y{ 0 }; y < size.y; y++)

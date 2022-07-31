@@ -16,7 +16,7 @@
 #include "StlTemplates.h"
 #include "Utils.h"
 #include "PythonRunner.h"
-
+#include "3mf.h"
 #include "Settings.h"
 
 int main()
@@ -33,13 +33,23 @@ int main()
     auto custom_skin_colors{ get_custom_skin_colors("text_output.txt") };
     auto taken_pixels{ init_taken_pixels_storage() };
     Skin skin{ custom_skin_colors, skin_documentation };
-    auto triangles{ init_facets_storage(skin)};
+    auto triangles{ init_facets_storage(skin) };
     construct_skin(skin, triangles, taken_pixels);
-    auto infill{ get_infill(skin) };
 
     delete_all_files_in_STL_output();
-    make_color_files_and_print_colors(skin, triangles, Settings::show_rgb_brackets);
-    make_file(infill, "INFILL");
+    delete_3mf_output();
+    if (strcmp (Settings::desired_file_type, "stl") == 0)
+    {
+        auto infill{ get_infill(skin) };
+        make_color_files_and_print_colors(skin, triangles, Settings::show_rgb_brackets);
+        make_file(infill, "INFILL");
+    }
+    else if (strcmp(Settings::desired_file_type, "3mf") == 0)
+        make_3mf_file(skin, triangles);
+    else {
+        std::cerr << "[ERROR] Invalid output file type: " << Settings::desired_file_type;
+        return EXIT_FAILURE;
+    }
 
     Py_Finalize();
 

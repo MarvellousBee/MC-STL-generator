@@ -30,7 +30,7 @@ std::string test_all(T function)
     return out;
 }
 
-void make_file(std::vector<StlTemplates::STLtriangle>& color, std::string file_name)
+void make_file(std::vector<StlTemplates::Facet>& color, std::string file_name)
 {
     std::ofstream outf{ "STL_output/" + file_name + ".stl" };
     if (!outf) {
@@ -39,10 +39,10 @@ void make_file(std::vector<StlTemplates::STLtriangle>& color, std::string file_n
     }
     outf << "solid ASCII\n";
     for (auto& i : color)
-        outf << make_facet(i);
+        outf << make_facet_string(i);
 }
 // returns if there was enough data to create a file
-bool make_file_with_id(std::vector<StlTemplates::STLtriangle>& color, int& file_id)
+bool make_file_with_id(std::vector<StlTemplates::Facet>& color, int& file_id)
 {
     if (color.size() == 0)
         return false;
@@ -54,7 +54,7 @@ bool make_file_with_id(std::vector<StlTemplates::STLtriangle>& color, int& file_
     }
     outf << "solid ASCII\n";
     for (auto& i : color)
-        outf << make_facet(i);
+        outf << make_facet_string(i);
     return true;
 }
 void delete_all_files_in_STL_output()
@@ -67,6 +67,7 @@ void delete_all_files_in_STL_output()
     std::string file{ "STL_output/INFILL.stl" };
     std::filesystem::remove(file);
 }
+
 void copy_file(const std::string input, const std::string output)
 {
     std::ifstream  src(input, std::ios::binary);
@@ -80,7 +81,7 @@ namespace Python
     void print_color(const int a, const int b, const int c, const bool& show_rgb_brackets);
 }
 
-void make_color_files_and_print_colors(Skin& skin, std::vector<std::vector<StlTemplates::STLtriangle>>& triangles, const bool& show_rgb_brackets)
+void make_color_files_and_print_colors(Skin& skin, std::vector<std::vector<StlTemplates::Facet>>& triangles, const bool& show_rgb_brackets)
 {
     int file_id{ 1 };
 
