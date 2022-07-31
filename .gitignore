@@ -365,11 +365,10 @@ FodyWeavers.xsd
 # STL files
 *.stl
 # 3mf output file
-output.stl
+*.3mf
 
 # skin files
-skin.png
-output.png
+*.png
 
 # text files
 text_output.txt
