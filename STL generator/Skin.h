@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include "XValues.h"
-#include "SkinStructure.h"
 
 
 struct Skin
@@ -50,3 +49,13 @@ struct Skin
             }
     }
 };
+
+std::vector<std::vector<StlTemplates::Facet>> init_facets_storage(Skin& skin)
+{
+    std::vector<std::vector<StlTemplates::Facet>> triangles;
+    triangles.resize(skin.colors.size());
+    for (auto& vec : triangles)
+        vec.reserve(64 * 64);
+    return triangles;
+}
+

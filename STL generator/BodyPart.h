@@ -362,3 +362,51 @@ public:
 
     }
 };
+
+void add_outer_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+{
+    add_vectors(color, BodyPart{ "Helm", {-2.f,0.f,34.f}, skin, iter, taken_pixels, true }.get_triangles());
+    add_vectors(color, BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(color, BodyPart{ "Right Leg Layer 2",  { 0.f, 0.f, 14.f }, skin, iter, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Leg Layer 2" ,  { 0.f,-4.f, 14.f }, skin, iter, taken_pixels, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Right Arm Layer 2" ,  { 0.f,  4.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+}
+
+void add_inner_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+{
+    add_vectors(color, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
+    add_vectors(color, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(color, BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, iter, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, iter, taken_pixels }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(color, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+}
+
+std::vector<StlTemplates::Facet> get_infill(Skin& skin)
+{
+    std::vector<StlTemplates::Facet> output;
+    add_vectors(output, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, true }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
+    add_vectors(output, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
+    add_vectors(output, BodyPart{ "Right Leg",  { 0.f, 0.f, 14.f }, skin, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(output, BodyPart{ "Left Leg" ,  { 0.f,-4.f, 14.f }, skin, true }.get_triangles());// size:  {  4.f,  4.f,  12.f  }
+    add_vectors(output, BodyPart{ "Right Arm" ,  { 0.f,  4.f, 26.f}, skin, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    add_vectors(output, BodyPart{ "Left Arm" ,   { 0.f,-8.f, 26.f }, skin, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
+    return output;
+}
+void construct_skin(Skin& skin,
+    std::vector<std::vector<StlTemplates::Facet>>& triangles,
+    std::map<std::string, std::vector<Point3f>>& taken_pixels
+)
+{
+    // Layer 2
+    // is dealt with first, so it covers up whatever it needs to cover first.
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+        if (skin.colors[i][3] != 0)
+            add_outer_layer(triangles[i], skin, i, taken_pixels);
+
+    // Layer 1
+    for (int i{ 0 }; i < skin.colors.size(); i++)
+        if (skin.colors[i][3] != 0)
+            add_inner_layer(triangles[i], skin, i, taken_pixels);
+}

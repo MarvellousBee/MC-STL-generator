@@ -11,7 +11,6 @@
 #include "XValues.h"
 #include "SkinStructure.h"
 #include "Skin.h"
-#include "SkinStructure.h"
 #include "BodyPart.h"
 #include "StlTemplates.h"
 #include "Utils.h"
