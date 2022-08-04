@@ -41,19 +41,7 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   3. replace `STL generator/skin.png` with your own minecraft skin,
   4. Build and run the project!
   
-  In the `STL_output` folder you should see the list of all `.stl` files that you need to 3D print.
-  
-  ![](media/stl_list.png)
-  
-  Meanwhile, the console should display all of the colors that correspond to your files
-  
-  ![](media/console_preview.png)
-  
-  Each color should be applied to the stl file that has the same number.
-  
-  So, in my example, color `EX3.stl` corresponds to console's `3`, which is `rgb(206, 153, 90)`.
-  
-  Load your `.stl` files into your 3D printer's slicer and paste corresponding colors.
+  You should find your `.3mf` file in the project directory!
   
   Happy Printing!
 
