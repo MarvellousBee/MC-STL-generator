@@ -42,6 +42,7 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   4. Build and run the project!
   
   You should find your `.3mf` file in the project directory!
-  If you want separate `.stl` files for ech color, check out this[instruction](stl_instructions.md)
+  
+  If you want separate `.stl` files for each color instead, check out this [instruction](stl_instructions.md)
   
   Happy Printing!
