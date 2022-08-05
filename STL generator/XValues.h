@@ -15,18 +15,18 @@ public:
         val[3] = d;
     }
 
-    ld& operator[] (const int& i)
+    ld& operator[] (const int& i) 
     {
         return val[i];
     }
-    ld at (int i) const
+    ld  operator[] (const int& i) const
     {
         return val[i];
     }
     bool operator ==(const Values4& arg) const
     {
         for (int i{ 0 }; i < 4; i++)
-            if (val[i] != arg.val[i])
+            if (val[i] != arg[i])
                 return false;
         return true;
     }
