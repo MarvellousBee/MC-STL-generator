@@ -72,9 +72,9 @@ std::vector<std::string> get_custom_skin_colors(std::string path = "text_output.
     return mc_skin;
 }
 
-std::map<std::string, std::vector<Point3f>> init_taken_pixels_storage()
+std::map<std::string, std::vector<Point3>> init_taken_pixels_storage()
 {
-    std::map<std::string, std::vector<Point3f>> taken_pixels{
+    std::map<std::string, std::vector<Point3>> taken_pixels{
         {"Front", {}}
     ,   {"Back", {}}
     ,   {"Left", {}}

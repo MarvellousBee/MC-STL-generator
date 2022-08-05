@@ -5,7 +5,7 @@
 #include "XValues.h"
 #include "StlTemplates.h"
 
-std::string make_facet_string(std::vector<Point3f> v, Point3f nrml)
+std::string make_facet_string(std::vector<Point3> v, Point3 nrml)
 {
     assert(v.size() == 3);
     std::string output{ "  facet normal " };
@@ -32,7 +32,7 @@ std::string make_facet_string(StlTemplates::Facet t)
     return make_facet_string(t.coordinates, t.normal);
 }
 
-StlTemplates::Facet make_facet_object(std::vector<Point3f> v, Point3f nrml)
+StlTemplates::Facet make_facet_object(std::vector<Point3> v, Point3 nrml)
 {
     assert(v.size() == 3);
     StlTemplates::Facet output;
@@ -53,7 +53,7 @@ StlTemplates::Facet make_facet_object(std::vector<Point3f> v, Point3f nrml)
 }
 
 // To be specific: makes a 3D rectangular prism
-std::vector<StlTemplates::Facet> make_object(const Point3f& origin, const std::string& type)
+std::vector<StlTemplates::Facet> make_object(const Point3& origin, const std::string& type)
 {
     //assert(StlTemplates::template_map.find(type) != StlTemplates::template_map.end());
 
@@ -74,7 +74,7 @@ std::vector<StlTemplates::Facet> make_object(const Point3f& origin, const std::s
     return output;
 }
 
-std::vector<StlTemplates::Facet> make_rectangle(const Point3f& origin, const Point3f& size)
+std::vector<StlTemplates::Facet> make_rectangle(const Point3& origin, const Point3& size)
 {
     std::vector<StlTemplates::Facet> output;
 

@@ -11,8 +11,8 @@ namespace StlTemplates
 {
     struct Facet
     {
-        Point3f normal{};
-        std::vector<Point3f> coordinates{};
+        Point3 normal{};
+        std::vector<Point3> coordinates{};
     };
     bool is_overlapping_rectangle(const std::list<Facet>& args)
     {

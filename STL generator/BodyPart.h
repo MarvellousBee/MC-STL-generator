@@ -19,7 +19,7 @@ std::vector<std::pair<int, int>> all_coordinates(Values4 input)
     return output;
 }
 
-bool is_pos_taken(const std::vector<Point3f>& taken_coordinates, const Point3f& cube_pos)
+bool is_pos_taken(const std::vector<Point3>& taken_coordinates, const Point3& cube_pos)
 {
     return std::find(taken_coordinates.begin(), taken_coordinates.end(), cube_pos) != taken_coordinates.end();
 }
@@ -28,7 +28,7 @@ class BodyPart
 {
     std::vector<StlTemplates::Facet> triangles;
 public:
-    const Point3f pos;
+    const Point3 pos;
     const Skin& skin;
     // add a non-colored box inside the part to make it sturdier
     constexpr static Values4 white{ 255, 255, 255, 255 };
@@ -39,7 +39,7 @@ public:
     }
 
     BodyPart(std::string part_name
-        , const Point3f _pos
+        , const Point3 _pos
         , const Skin& skin_to_apply
         , const bool& is_infill = false)
         : pos(_pos)
@@ -55,7 +55,7 @@ public:
         ,   { "Top"   , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
         };
 
-        Point3f size{
+        Point3 size{
             coordinates["Left"].back().second - coordinates["Left"][0].second + 1,
             coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
             coordinates["Front"].back().first - coordinates["Front"][0].first + 1
@@ -77,11 +77,11 @@ public:
     }
 
     BodyPart(std::string part_name
-        , const Point3f _pos
+        , const Point3 _pos
         , const Skin& skin_to_apply
         , const int& color_id
         , std::map<std::string
-        , std::vector<Point3f>>& taken_coordinates
+        , std::vector<Point3>>& taken_coordinates
         , const bool& is_outer = false)
         : pos(_pos)
         , skin(skin_to_apply)
@@ -96,7 +96,7 @@ public:
         ,   { "Top"   , all_coordinates(skin_to_apply.skin_structure.at(part_name).at("Top")) }
         };
 
-        Point3f size{
+        Point3 size{
             coordinates["Left"].back().second - coordinates["Left"][0].second + 1,
             coordinates["Front"].back().second - coordinates["Front"][0].second + 1,
             coordinates["Front"].back().first - coordinates["Front"][0].first + 1
@@ -363,7 +363,7 @@ public:
     }
 };
 
-void add_outer_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+void add_outer_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3>>& taken_pixels)
 {
     add_vectors(color, BodyPart{ "Helm", {-2.f,0.f,34.f}, skin, iter, taken_pixels, true }.get_triangles());
     add_vectors(color, BodyPart{ "Torso Layer 2",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
@@ -373,7 +373,7 @@ void add_outer_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& i
     add_vectors(color, BodyPart{ "Left Arm Layer 2" ,   { 0.f,-8.f, 26.f }, skin, iter, taken_pixels, true }.get_triangles()); // size:  {  4.f,  4.f,  12.f  }
 }
 
-void add_inner_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3f>>& taken_pixels)
+void add_inner_layer(std::vector<StlTemplates::Facet>& color, Skin& skin, int& iter, std::map<std::string, std::vector<Point3>>& taken_pixels)
 {
     add_vectors(color, BodyPart{ "Head", { -2.f,0.f,34.f }, skin, iter, taken_pixels }.get_triangles()); // size:  {  8.f,  8.f,  8.f  }
     add_vectors(color, BodyPart{ "Torso",  { 0.f,0.f,26.f  }, skin, iter, taken_pixels }.get_triangles()); // size:  {  4.f,  8.f, 12.f  }
@@ -396,7 +396,7 @@ std::vector<StlTemplates::Facet> get_infill(Skin& skin)
 }
 void construct_skin(Skin& skin,
     std::vector<std::vector<StlTemplates::Facet>>& triangles,
-    std::map<std::string, std::vector<Point3f>>& taken_pixels
+    std::map<std::string, std::vector<Point3>>& taken_pixels
 )
 {
     // Layer 2

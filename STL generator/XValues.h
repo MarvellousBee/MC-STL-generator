@@ -41,39 +41,39 @@ std::ostream& operator<<(std::ostream& os, const Values4& rhs)
     return os;
 }
 
-struct Point3f
+struct Point3
 {
     ld x;
     ld y;
     ld z;
 
-    Point3f& operator -(const Point3f& a2)
+    Point3& operator -(const Point3& a2)
     {
         x -= a2.x;
         y -= a2.y;
         z -= a2.z;
         return *this;
     }
-    Point3f& operator *(const Point3f& a2)
+    Point3& operator *(const Point3& a2)
     {
         x *= a2.x;
         y *= a2.y;
         z *= a2.z;
         return *this;
     }
-    Point3f& operator *=(const Point3f& a2)
+    Point3& operator *=(const Point3& a2)
     {
         *this = *this * a2;
         return *this;
     }
-    Point3f& operator /(const ld& a2)
+    Point3& operator /(const ld& a2)
     {
         x /= a2;
         y /= a2;
         z /= a2;
         return *this;
     }
-    Point3f& operator +(const Point3f& a2)
+    Point3& operator +(const Point3& a2)
     {
         x += a2.x;
         y += a2.y;
@@ -84,7 +84,7 @@ struct Point3f
     {
         return x + y + z;
     }
-    bool operator ==( const Point3f& arg2) const
+    bool operator ==( const Point3& arg2) const
     {
         return x == arg2.x
             && y == arg2.y
