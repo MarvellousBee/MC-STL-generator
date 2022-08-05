@@ -5,7 +5,6 @@
 TEST(TestXValues, Values4) {
     Values4 values4{ 1,2,3,4 };
     EXPECT_EQ(values4[0], 1);
-    EXPECT_EQ(values4.at(0), 1);
     EXPECT_TRUE(values4 == Values4(1, 2, 3, 4));
 }
 
