@@ -3,10 +3,10 @@
 
 typedef long double ld;
 
-struct Values4
+class Values4
 {
     ld val[4]{ 0,0,0,0 };
-
+public:
     Values4() {};
     constexpr Values4(ld&& a, ld&& b, ld&& c, ld&& d){
         val[0] = a;
@@ -23,30 +23,17 @@ struct Values4
     {
         return val[i];
     }
-    bool operator ==(const Values4& arg)
+    bool operator ==(const Values4& arg) const
     {
         for (int i{ 0 }; i < 4; i++)
             if (val[i] != arg.val[i])
                 return false;
         return true;
     }
-    template <class T>
-    bool operator ==(const T& arg)
-    {
-        for (int i{ 0 }; i < 4; i++)
-            if (val[i] != arg[i])
-                return false;
-        return true;
-    }
-    friend bool operator ==(const Values4& arg1, const Values4& arg2);
+
+    friend std::ostream& operator<<(std::ostream& os, const Values4& rhs);
 };
-bool operator ==(const Values4& arg1, const Values4& arg2)
-{
-    for (int i{ 0 }; i < 4; i++)
-        if (arg1.val[i] != arg2.val[i])
-            return false;
-    return true;
-}
+
 std::ostream& operator<<(std::ostream& os, const Values4& rhs)
 {
     for (int i{ 0 }; i < 4; i++)
@@ -97,28 +84,13 @@ struct Point3f
     {
         return x + y + z;
     }
-    friend Point3f operator -(const Point3f& arg1, const Point3f& arg2);
-    friend bool operator ==(const Point3f& arg1, const Point3f& arg2);
+    bool operator ==( const Point3f& arg2) const
+    {
+        return x == arg2.x
+            && y == arg2.y
+            && z == arg2.z;
+    }
 };
 
-Point3f operator -(const Point3f& arg1, const Point3f& arg2)
-{
-    Point3f ret{ 0,0,0 };
 
-    ret.x -= arg1.x;
-    ret.y -= arg1.y;
-    ret.z -= arg1.z;
 
-    ret.x -= arg2.x;
-    ret.y -= arg2.y;
-    ret.z -= arg2.z;
-
-    return ret;
-}
-
-bool operator ==(const Point3f& arg1, const Point3f& arg2)
-{
-    return arg1.x == arg2.x 
-        && arg1.y == arg2.y
-        && arg1.z == arg2.z;
-}
