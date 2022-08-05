@@ -19,7 +19,7 @@ public:
     {
         return val[i];
     }
-    ld  operator[] (const int& i) const
+    const ld&  operator[] (const int& i) const
     {
         return val[i];
     }

@@ -4,7 +4,13 @@
 #include "../STL generator/StlGeneration.h"
 TEST(TestXValues, Values4) {
     Values4 values4{ 1,2,3,4 };
+    const Values4& cref{ values4 };
+
+    // non-const overload
     EXPECT_EQ(values4[0], 1);
+    // const overload
+    EXPECT_EQ(cref[0], 1);
+
     EXPECT_TRUE(values4 == Values4(1, 2, 3, 4));
 }
 
