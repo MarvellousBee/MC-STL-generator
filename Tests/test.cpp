@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "../STL generator/XValues.h"
-#include "../STL generator/stl generation.h"
+#include "../STL generator/StlGeneration.h"
 TEST(TestXValues, Values4) {
     Values4 values4{ 1,2,3,4 };
     EXPECT_EQ(values4[0], 1);

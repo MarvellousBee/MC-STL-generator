@@ -45,7 +45,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stl generation.h">
+    <ClInclude Include="StlGeneration.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SkinStructure.h">

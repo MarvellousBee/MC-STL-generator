@@ -5,7 +5,7 @@
 
 #include "Skin.h"
 #include "XValues.h"
-#include "stl generation.h"
+#include "StlGeneration.h"
 #include "Utils.h"
 
 //given 2 x/y coordinates, returns all pixel coordinates of a rectangle constructed between those 2 points

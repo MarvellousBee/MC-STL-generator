@@ -7,8 +7,7 @@
 #include <memory>
 #include <filesystem>
 
-#include "stl generation.h"
-#include "XValues.h"
+#include "StlGeneration.h"
 #include "SkinStructure.h"
 #include "Skin.h"
 #include "BodyPart.h"

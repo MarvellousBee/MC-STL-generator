@@ -169,7 +169,7 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="XValues.h" />
     <ClInclude Include="SkinStructure.h" />
-    <ClInclude Include="stl generation.h" />
+    <ClInclude Include="StlGeneration.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="plane_coords.txt" />

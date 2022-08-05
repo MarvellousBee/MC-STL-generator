@@ -1,0 +1,5 @@
+max_colors = 15
+merge_colors = 0
+pause_to_edit = 0
+show_rgb_brackets = 1
+desired_file_type = 3mf

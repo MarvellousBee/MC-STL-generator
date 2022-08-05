@@ -90,6 +90,7 @@ def generate_marker_colors(path = 'output.png'):
     print(len(unique_colors), num_of_colors)
     assert len(unique_colors) == num_of_colors
     #for some reason, they R and B values get swapped along the way, but the image renders fine!
+    #big/small endian problem, perhaps?
     #fix colors for display
     for pixel in unique_colors:
         marker_colors.append(blue_swap(pixel))
