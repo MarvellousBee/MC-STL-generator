@@ -47,38 +47,42 @@ struct Point3
     ld y;
     ld z;
 
-    Point3& operator -(const Point3& a2)
+    Point3 operator -(const Point3& a2)
     {
-        x -= a2.x;
-        y -= a2.y;
-        z -= a2.z;
-        return *this;
+        Point3 output{*this};
+        output.x -= a2.x;
+        output.y -= a2.y;
+        output.z -= a2.z;
+        return output;
     }
-    Point3& operator *(const Point3& a2)
+    Point3 operator *(const Point3& a2)
     {
-        x *= a2.x;
-        y *= a2.y;
-        z *= a2.z;
-        return *this;
+        Point3 output{ *this };
+        output.x *= a2.x;
+        output.y *= a2.y;
+        output.z *= a2.z;
+        return output;
     }
     Point3& operator *=(const Point3& a2)
     {
         *this = *this * a2;
         return *this;
     }
-    Point3& operator /(const ld& a2)
+    Point3 operator /(const ld& a2)
     {
-        x /= a2;
-        y /= a2;
-        z /= a2;
-        return *this;
+        Point3 output{ *this };
+        output.x /= a2;
+        output.y /= a2;
+        output.z /= a2;
+        return output;
     }
-    Point3& operator +(const Point3& a2)
+    Point3 operator +(const Point3& a2)
     {
-        x += a2.x;
-        y += a2.y;
-        z += a2.z;
-        return *this;
+        Point3 output{ *this };
+        output.x += a2.x;
+        output.y += a2.y;
+        output.z += a2.z;
+        return output;
     }
     ld sum()
     {
