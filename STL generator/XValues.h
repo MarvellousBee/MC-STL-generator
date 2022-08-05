@@ -1,22 +1,25 @@
 #pragma once
 #include <ostream>
+
+typedef long double ld;
+
 struct Values4
 {
-    long double val[4]{ 0,0,0,0 };
+    ld val[4]{ 0,0,0,0 };
 
     Values4() {};
-    constexpr Values4(int&& a, int&& b, int&& c, int&& d){
+    constexpr Values4(ld&& a, ld&& b, ld&& c, ld&& d){
         val[0] = a;
         val[1] = b;
         val[2] = c;
         val[3] = d;
     }
 
-    long double& operator[] (const int& i)
+    ld& operator[] (const int& i)
     {
         return val[i];
     }
-    long double at (int i) const
+    ld at (int i) const
     {
         return val[i];
     }
@@ -53,9 +56,9 @@ std::ostream& operator<<(std::ostream& os, const Values4& rhs)
 
 struct Point3f
 {
-    long double x;
-    long double y;
-    long double z;
+    ld x;
+    ld y;
+    ld z;
 
     Point3f& operator -(const Point3f& a2)
     {
@@ -76,7 +79,7 @@ struct Point3f
         *this = *this * a2;
         return *this;
     }
-    Point3f& operator /(const long double& a2)
+    Point3f& operator /(const ld& a2)
     {
         x /= a2;
         y /= a2;
@@ -90,7 +93,7 @@ struct Point3f
         z += a2.z;
         return *this;
     }
-    long double sum()
+    ld sum()
     {
         return x + y + z;
     }
