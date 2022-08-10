@@ -46,3 +46,11 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   If you want separate `.stl` files for each color instead, check out this [instruction](stl_instructions.md)
   
   Happy Printing!
+
+## Licensing
+
+You are NOT ALLOWED to use this software or any software that was made by modifying files from this repository in any COMMERCIAL way without permission. This includes selling models or 3D prints.
+
+You are ALLOWED to use this software in any non-profit way. You may use it to 3d print a model on an external company's printer (or your own). You may keep the model for yourself or give it to anyone free of charge.
+
+If you wish to modify this software, you are ALLOWED to do so as long as you, your software and your license do not violate any of the licensing terms of this software. 
