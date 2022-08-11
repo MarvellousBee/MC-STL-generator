@@ -10,7 +10,7 @@ Here's the example skin's head, 3D printed on my makeshift abomination of a 3D p
 ![](media/printed.jpg)
 
 ## Dependencies
-You will need [Python](https://www.python.org/downloads/) and the following [pip](https://pypi.org/project/pip/) libraries:
+You will need [Visual Studio](https://visualstudio.microsoft.com) configured for C++ development, [Python](https://www.python.org/downloads/) and the following [pip](https://pypi.org/project/pip/) libraries:
 * opencv-python
 * NumPy
 * PIL
