@@ -46,3 +46,5 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   If you want separate `.stl` files for each color instead, check out this [instruction](stl_instructions.md)
   
   Happy Printing!
+
+![](https://user-images.githubusercontent.com/63006301/213400066-9ef381a5-ec16-4b48-b4c8-e8888b20f2de.png)
