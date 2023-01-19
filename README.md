@@ -1,6 +1,8 @@
 # MC-STL-generator
 ![](media/preview.gif)
 
+[![License: CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 This example program can make any Minecraft skin 3D printable!
 
 Here's the example skin's head, 3D printed on my makeshift abomination of a 3D printer:
@@ -46,5 +48,3 @@ If your printer supports **LESS** colors than your skin has - you can merge them
   If you want separate `.stl` files for each color instead, check out this [instruction](stl_instructions.md)
   
   Happy Printing!
-
-![](https://user-images.githubusercontent.com/63006301/213400066-9ef381a5-ec16-4b48-b4c8-e8888b20f2de.png)
