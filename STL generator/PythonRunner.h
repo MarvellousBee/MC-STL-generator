@@ -15,7 +15,10 @@ namespace Python
     
     void add_script_path()
     {
-        Pymodule = PyImport_ImportModule("shortcut");
+        std::filesystem::path cwd = std::filesystem::current_path();
+        PyObject *sys_path = PySys_GetObject("path");
+        PyList_Append(sys_path, PyUnicode_FromString(cwd.string().c_str()));
+        Pymodule = PyImport_ImportModule("python_functions");
         PyErr_Print();
     }
 

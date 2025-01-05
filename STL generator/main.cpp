@@ -6,6 +6,7 @@
 #include <cmath>
 #include <memory>
 #include <filesystem>
+#include <iostream>
 
 #include "StlGeneration.h"
 #include "SkinStructure.h"
@@ -50,6 +51,8 @@ int main()
     }
 
     Py_Finalize();
+
+    std::cout << "Success!\n";
 
     return EXIT_SUCCESS;
 }
